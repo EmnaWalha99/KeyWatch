@@ -1,0 +1,63 @@
+{
+    "_id": {
+      "$oid": "6852c3834b2ab01cd698c738"
+    },
+    "type": "ePayment",
+    "orderId": "215314",
+    "method": "bank_card",
+    "addPaymentFeesToAmount": true,
+    "payment": {
+      "$oid": "6852c2934b2ab01cd69885b5"
+    },
+    "tags": [],
+    "paymentChannel": "Wordpress",
+    "receiverWallet": {
+      "$oid": "633c34383cae9970d0f932c4"
+    },
+    "underVerification": false,
+    "hidden": false,
+    "status": "failed_payment",
+    "processing": false,
+    "hashs": [],
+    "note": {
+      "attachments": []
+    },
+    "comments": [],
+    "token": "TND",
+    "amount": 40008,
+    "message": "- EA SPORTS FC 25 PC Steam Account x 1 = 37.8675 TND",
+    "hideIdentity": false,
+    "hideContribution": false,
+    "origin": 1,
+    "requestOrigin": "https://tunigamers.com/",
+    "disputeInitiated": false,
+    "refunded": false,
+    "internalNotes": [],
+    "notes": [],
+    "createdAt": {
+      "$date": "2025-06-18T13:47:47.691Z"
+    },
+    "updatedAt": {
+      "$date": "2025-06-18T13:49:01.519Z"
+    },
+    "__v": 0,
+    "ext_payment_ref": "0a9585ce-f85d-4a7b-a053-6830143ebda5",
+    "from": "smt",
+    "details": "Rejected Authorization - Low Balance [116: Not enough money]",
+    "extSenderInfo": {
+      "pan": "542026**9777",
+      "expiration": "202705",
+      "paymentSystem": "MASTERCARD",
+      "name": "SIHEM ABDAOUI",
+      "email": "",
+      "bankInfo": {
+        "bankName": "SOCIETE MONETIQUE-TUNISIE     ",
+        "bankCountryCode": "788",
+        "bankCountryName": "788"
+      }
+    },
+    "paidAt": {
+      "$date": "2025-06-18T13:49:00.083Z"
+    },
+    "senderIP": "160.157.150.236"
+  }

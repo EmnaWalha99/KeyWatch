@@ -1,0 +1,92 @@
+{
+  "_id": {
+    "$oid": "66bf19490e581535c3cf66d1"
+  },
+  "type": "ePayment",
+  "method": "bank_card",
+  "addPaymentFeesToAmount": false,
+  "payment": {
+    "$oid": "66bf19450e581535c3cf6676"
+  },
+  "receiverWallet": {
+    "$oid": "647edc058e0b604b11438e01"
+  },
+  "underVerification": false,
+  "hidden": false,
+  "status": "success",
+  "note": {
+    "attachments": []
+  },
+  "comments": [],
+  "token": "TND",
+  "amount": 3252000,
+  "message": "",
+  "hideIdentity": false,
+  "hideContribution": false,
+  "origin": 1,
+  "disputeInitiated": false,
+  "refunded": false,
+  "createdAt": {
+    "$date": "2024-08-16T09:18:01.169Z"
+  },
+  "updatedAt": {
+    "$date": "2025-02-27T12:59:13.892Z"
+  },
+  "__v": 0,
+  "ext_payment_ref": "b0120fbd-e146-439c-bb93-545bc302cf59",
+  "from": "smt",
+  "amountAfterFee": 3199968,
+  "authRefNum": "001242276488",
+  "binInformation": {
+    "$oid": "663ce014d65ce91d9e01fa2e"
+  },
+  "details": "Request processed successfully",
+  "extSenderInfo": {
+    "pan": "521265**8218",
+    "approvalCode": "037983",
+    "expiration": "202612",
+    "paymentSystem": "MASTERCARD",
+    "name": "SAMI SGHAIER",
+    "email": "",
+    "bankInfo": {
+      "bankCountryCode": "788",
+      "bankCountryName": "Tunisia"
+    }
+  },
+  "feeRate": 1.6,
+  "paidAt": {
+    "$date": "2024-08-16T09:18:59.428Z"
+  },
+  "senderIP": "197.26.95.0",
+  "senderIpInformation": {
+    "status": "success",
+    "country": "Tunisia",
+    "countryCode": "TN",
+    "region": "13",
+    "regionName": "Ben Arous Governorate",
+    "city": "Mégrine",
+    "zip": "",
+    "lat": 36.7707,
+    "lon": 10.2404,
+    "timezone": "Africa/Tunis",
+    "currency": "TND",
+    "isp": "3S INF",
+    "org": "ATI - Agence Tunisienne Internet",
+    "as": "AS37671 3S INF",
+    "mobile": false,
+    "proxy": false,
+    "hosting": false,
+    "query": "197.26.95.0"
+  },
+  "senderIpLocation": {
+    "type": "Point",
+    "coordinates": [
+      10.1934,
+      36.8601
+    ],
+    "updatedAt": {
+      "$date": "2024-08-16T09:19:02.033Z"
+    }
+  },
+  "totalFee": 52032
+}
