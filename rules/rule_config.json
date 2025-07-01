@@ -1,0 +1,7 @@
+{
+  "is_late_night": { "value": 1, "score": 2 },
+  "big_amount": { "value": 1, "score": 3 },
+  "country_mismatch": { "value": 1, "score": 4 },
+  "failure_contains_low_balance": { "value": 1, "score": 1 },
+  "is_proxy": { "value": 1, "score": 2 }
+}
