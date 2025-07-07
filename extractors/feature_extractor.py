@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from zoneinfo import ZoneInfo
 from dateutil.parser import isoparse
+from dataAccess.counting_transactions import get_distinct_counts , get_velocity_counts
+from config.db import get_transactions_collection
 class FeatureExtractor:
     def __init__(self):
         pass
@@ -18,6 +20,12 @@ class FeatureExtractor:
         features.update(self._extract_day(trnx_data))
         features.update(self._extract_status(trnx_data))
         features.update(self._extract_country(trnx_data))
+        features.update(self._extract_fee_rate(trnx_data))
+        features.update(self._extract_pan_info(trnx_data))
+        
+        collection = get_transactions_collection()
+        features.update(get_velocity_counts(trnx_data,collection=collection))
+        features.update(get_distinct_counts(trnx_data))
         return features
     
     def _extract_amount(self,data):
@@ -134,15 +142,17 @@ class FeatureExtractor:
             ip_info = data.get("senderIpInformation", {})
             is_mobile = 1 if ip_info.get("mobile", False) else 0
             is_proxy= 1 if ip_info.get("proxy", False) else 0
+            senderIP = data.get("senderIP")
             #is_vpn = 1 if ip_info.get("vpn", False) else 0
             return {
+                "senderIP" : senderIP,
                 "is_mobile": is_mobile,
                 "is_proxy": is_proxy
             }
         except Exception as e:
             print("[ERROR] IP information extraction failed:", e)
             return {
-                "ip_address": "unknown",
+                #"ip_address": "unknown",
                 "isp": "unknown",
                 "is_mobile": "unknown"
                 
@@ -151,7 +161,7 @@ class FeatureExtractor:
         try:
            email=data.get("extSenderInfo",{}).get("email","")
            has_email=1 if email else 0
-           name=data.get("extSenderInfor",{}).get("name","")
+           name=data.get("extSenderInfo",{}).get("name","")
            has_name=1 if name else 0
            return {
                "email": email,
@@ -167,6 +177,31 @@ class FeatureExtractor:
                 "name": "unknown"
                 #"has_name": 0
             }
+    def _extract_fee_rate(self, data):
+        try:
+            fee_rate = data.get("feeRate", None)
+            return {
+                "fee_rate": fee_rate
+            }
+        except Exception as e:
+            print("[ERROR] Fee rate extraction failed:", e)
+            return {
+                "fee_rate": None
+            }
+    def _extract_pan_info(self, data):
+        try:
+            pan = data.get("extSenderInfo", {}).get("pan", "")
+            bin_code = pan[:6] if len(pan) >= 6 else None
+            return {
+                "bin": bin_code
+            }
+        except Exception as e:
+            print("[ERROR] PAN extraction failed:", e)
+            return {
+                "bin": None
+            }
+
+
             
            
                 

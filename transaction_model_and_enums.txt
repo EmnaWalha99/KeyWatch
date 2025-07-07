@@ -1,0 +1,484 @@
+// @ts-nocheck
+const mongoose = require("mongoose");
+const mongoosePaginate = require("mongoose-paginate-v2");
+
+const { Schema } = mongoose;
+const { ObjectId } = require("mongodb");
+
+const tokensVar = process.env.TOKENS || "TND,EUR,GBP,USD,CAD,CHF,XOF,MAD,MCOIN";
+const tokens = tokensVar.split(",");
+
+const TransactionSchema = new Schema(
+  {
+    txId: {
+      type: String,
+    },
+    phoneNumber: {
+      type: String,
+    },
+    type: {
+      type: String,
+      enum: [
+        "subscription",
+        "commission",
+        "cashin",
+        "transfer",
+        "cashout",
+        "bank_cashout",
+        "bank_cashin_deposit",
+        "bank_wire_cashin",
+        "bank_wire_transfer",
+        "invoice",
+        "topup",
+        "scholarship",
+        "transfer_request",
+        "ePayment",
+        "refund",
+        "loan_refund",
+        "voucher",
+        "donation",
+        "nfc",
+        "pos",
+      ],
+    },
+    requestedToken: {
+      type: String,
+    },
+    requestedAmount: {
+      type: Number,
+    },
+    serviceProvider: {
+      type: String,
+      enum: [
+        "Ooredoo",
+        "Orange",
+        "Tunisie-Telecom",
+        "Promocote",
+        "Bet216",
+        "Winbet365",
+      ],
+    },
+    from: {
+      type: String,
+    },
+    orderId: {
+      type: String,
+    },
+    publicLink: {
+      id: {
+        type: String,
+        unique: true,
+      },
+      createdAt: {
+        type: Date,
+      },
+    },
+    method: {
+      type: String,
+      enum: [
+        "bank_card",
+        "wallet",
+        "konnect",
+        "bank_wire",
+        "Paypal",
+        "flouci",
+        "mobile_money",
+        "mtn",
+        "cash",
+        "voucher",
+        "pluxee",
+        "binga",
+      ],
+    },
+    addPaymentFeesToAmount: {
+      type: Boolean,
+      default: false,
+    },
+    payment: {
+      type: ObjectId,
+      ref: "Payment",
+    },
+    massTransfer: {
+      type: ObjectId,
+      ref: "MassTransfer",
+    },
+    ext_payment_ref: {
+      type: String,
+    },
+    ext_flouci_ref: {
+      type: String,
+    },
+    ext_pluxee_ref: {
+      type: String,
+    },
+    ext_cashout_ref: {
+      type: String,
+    },
+    extSenderInfo: {
+      type: Schema.Types.Mixed,
+    },
+    bingaOrderCode: {
+      type: String,
+    },
+    bingaOrderExpiration: {
+      type: Date,
+    },
+    tags: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Tag",
+      },
+    ],
+    postalCode: {
+      type: String,
+    },
+    paymentChannel: {
+      type: String,
+      enum: ["D17", "BP"],
+    },
+    checkoutFormData: {
+      firstName: {
+        type: Schema.Types.String,
+      },
+      lastName: {
+        type: Schema.Types.String,
+      },
+      email: {
+        type: Schema.Types.String,
+      },
+      phoneNumber: {
+        type: Schema.Types.String,
+      },
+      message: {
+        type: Schema.Types.String,
+      },
+    },
+    senderWallet: {
+      type: Schema.Types.ObjectId,
+      ref: "Wallet",
+    },
+    receiverWallet: {
+      type: Schema.Types.ObjectId,
+      ref: "Wallet",
+    },
+    escrowWallet: {
+      type: Schema.Types.ObjectId,
+      ref: "Wallet",
+    },
+    orderer: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
+    code: {
+      type: String,
+    },
+    voucher: {
+      type: Schema.Types.ObjectId,
+      ref: "Voucher",
+    },
+    originalTransaction: {
+      type: Schema.Types.ObjectId,
+      ref: "Transaction",
+    },
+    underVerification: {
+      type: Boolean,
+      default: false,
+    },
+    binInformation: {
+      type: Schema.Types.Mixed,
+      ref: "Bin",
+    },
+    hidden: {
+      type: Boolean,
+      default: false,
+    },
+    status: {
+      type: String,
+      enum: [
+        "pending",
+        "pending_hyperledger_fabric",
+        "pending_pay_invoice",
+        "pending_pay_scholarship",
+        "pending_cashout_bank_transfer",
+        "pending_cashout",
+        "pending_cashin_bank_deposit",
+        "pending_cashin_bank_wire",
+        "pending_sender_validation",
+        "failed_hyperledger_fabric",
+        "subscription",
+        "pending_payment",
+        "failed_payment",
+        "failed_cashout",
+        "failed_transfer",
+        "success",
+        "canceled",
+        "refunded",
+        "processing",
+        "in_progress",
+        "on_hold",
+        "expired",
+        "blocked",
+      ],
+    },
+    processing: {
+      type: Boolean,
+      default: false,
+    },
+    details: {
+      type: String,
+    },
+    csvSummary: {
+      type: String,
+    },
+    hashs: {
+      type: [String],
+    },
+    regionType: {
+      type: String,
+      enum: ["international", "national"],
+    },
+    note: {
+      message: {
+        type: String,
+      },
+      attachments: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: "File",
+        },
+      ],
+    },
+    internalNotes: [
+      {
+        message: {
+          type: String,
+        },
+        attachments: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "File",
+          },
+        ],
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        date: {
+          type: Date,
+        },
+      },
+    ],
+    notes: [
+      {
+        message: {
+          type: String,
+        },
+        attachments: [
+          {
+            type: Schema.Types.ObjectId,
+            ref: "File",
+          },
+        ],
+        user: {
+          type: Schema.Types.ObjectId,
+          ref: "User",
+        },
+        date: {
+          type: Date,
+        },
+        role: {
+          type: String,
+        },
+      },
+    ],
+    executionTime: {
+      type: Date,
+    },
+    settlementTransaction: {
+      type: Schema.Types.ObjectId,
+      ref: "Transaction",
+    },
+    comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
+    settlement: {
+      type: Boolean,
+    },
+    settlementDate: {
+      type: Date,
+    },
+    token: {
+      type: String,
+      enum: tokens,
+    },
+    amount: {
+      type: Number,
+    },
+    message: {
+      type: String,
+    },
+    description: {
+      type: String,
+    },
+    totalFee: {
+      type: Number,
+    },
+    bankFee: {
+      type: Number,
+    },
+    bankFeeRate: {
+      type: Number,
+    },
+    bankDetails: {
+      type: Schema.Types.Mixed,
+    },
+    merchantName: {
+      type: String,
+    },
+    hideIdentity: {
+      type: Boolean,
+      default: false,
+    },
+    hideContribution: {
+      type: Boolean,
+      default: false,
+    },
+    amountAfterFee: {
+      type: Number,
+    },
+    receiverIdentifier: {
+      type: String,
+    },
+    loyaltyToken: {
+      type: String,
+    },
+    exchangeRateTND: {
+      type: Number,
+    },
+    image: {
+      type: Schema.Types.ObjectId,
+      ref: "File",
+    },
+    affiliation: {
+      type: {
+        type: String,
+        enum: ["merchant-affiliation", "konnect-affiliation"],
+      },
+      id: {
+        type: Schema.Types.ObjectId,
+        ref: "Affiliation",
+      },
+    },
+    imageURL: {
+      type: String,
+    },
+    senderIP: {
+      type: String,
+    },
+    trackingInfo: {
+      clientIP: {
+        type: String,
+      },
+      clientFingerprint: {
+        type: String,
+      },
+    },
+    authRefNum: {
+      type: String,
+    },
+    senderIpLocation: {
+      type: {
+        type: String,
+        enum: ["Point"],
+      },
+      coordinates: {
+        type: [Number],
+        default: undefined,
+      },
+      updatedAt: {
+        type: Date,
+      },
+    },
+    senderIpInformation: {
+      type: Schema.Types.Mixed,
+    },
+    origin: {
+      type: Number,
+    },
+    requestOrigin: {
+      type: String,
+    },
+    feeRate: {
+      type: Number,
+    },
+    fixedFee: {
+      type: Number,
+    },
+    paymentDetails: {
+      type: Schema.Types.Mixed,
+    },
+    payerId: {
+      type: String,
+    },
+    paidAt: {
+      type: Date,
+    },
+    confirmedAt: {
+      type: Date,
+    },
+    disputeInitiated: {
+      type: Boolean,
+      default: false,
+    },
+    refunded: {
+      type: Boolean,
+      default: false,
+    },
+    paymentChannel: {
+      type: String,
+      enum: ["PaymentLink", "Wordpress", "API", "Prestashop", "WHMCS"],
+    },
+  },
+  {
+    timestamps: {
+      createdAt: "createdAt",
+      updatedAt: "updatedAt",
+    },
+  }
+);
+
+// Add text index to the schema
+TransactionSchema.index({
+  message: "text",
+  "extSenderInfo.email": "text",
+  "extSenderInfo.name": "text",
+  "extSenderInfo.pan": "text",
+});
+
+// Add other indexes
+TransactionSchema.index({ payment: 1 });
+TransactionSchema.index({ senderWallet: 1 });
+TransactionSchema.index({ receiverWallet: 1 });
+
+TransactionSchema.plugin(mongoosePaginate);
+TransactionSchema.set("toJSON", { virtuals: true });
+/**
+ * toJSON implementation
+ */
+TransactionSchema.options.toJSON = {
+  transform(doc, ret) {
+    const r = ret;
+    r.id = r._id;
+    delete r._id;
+    delete r.__v;
+    delete r.hideContribution;
+    delete r.hideIdentity;
+
+    if (!doc.isSelected("bankFeeRate"))
+      // temporarily till we develop a global middleware to validate the response
+      // remove bankFeeRate from the document if it's not selected in the query
+      delete r.bankFeeRate;
+
+    return r;
+  },
+};
+
+module.exports = mongoose.model("Transaction", TransactionSchema);
