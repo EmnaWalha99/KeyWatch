@@ -20,31 +20,26 @@ default_window_minutes = {
     "senderIP": 60,
     "extSenderInfo.name": 300
 }
-def get_velocity_counts(transaction , now=None, collection=None):
+def get_velocity_counts(transaction, now=None, collection=None):
     if now is None:
         now = datetime.now(timezone.utc)
-    if collection is None :
+    if collection is None:
         collection = get_transactions_collection()
-    pan = transaction.get("extSenderInfo", {}).get("pan", None)
-    senderIP = transaction.get("senderIP", None)
-    email = transaction.get("extSenderInfo", {}).get("email", None)
-    name = transaction.get("extSenderInfo", {}).get("name", None)
-    
-    
-    velocity_check = {  # i need to delte this later ! 
-    "pan" : [15 , 60],
-    "senderIP" : [60] , 
-    "email" : [300] , 
-    "name" : [300]
-}
+
+    pan = transaction.get("extSenderInfo", {}).get("pan")
+    senderIP = transaction.get("senderIP")
+    email = transaction.get("extSenderInfo", {}).get("email")
+    name = transaction.get("extSenderInfo", {}).get("name")
+
     key_values = {
         "pan": pan,
         "senderIP": senderIP,
         "email": email,
         "name": name
     }
+
     flat_results = {}
-    
+
     for key, windows in velocity_check.items():
         value = key_values.get(key)
         if not value:
@@ -52,81 +47,81 @@ def get_velocity_counts(transaction , now=None, collection=None):
 
         for window_minutes in windows:
             since = now - timedelta(minutes=window_minutes)
-        
-            if key == "pan":
-                query = {
-                    "extSenderInfo.pan": value,
-                    "createdAt": {"$gte": since}
-                }
-            elif key == "senderIP":
-                query = {
-                    "senderIP": value,
-                    "createdAt": {"$gte": since}
-                }
-            elif key == "email":
-                query = {
-                    "extSenderInfo.email": value,
-                    "createdAt": {"$gte": since}
-                }
-            elif key == "name":
-                query = {
-                    "extSenderInfo.name": value,
-                    "createdAt": {"$gte": since}
-                }
-            else:
-                continue
 
-            #print(f"[DEBUG] Query for {key} ({window_minutes}m): {query}")
+            query_field = {
+                "pan": "extSenderInfo.pan",
+                "senderIP": "senderIP",
+                "email": "extSenderInfo.email",
+                "name": "extSenderInfo.name"
+            }[key]
+
+            query = {
+                query_field: value,
+                "createdAt": {"$gte": since}
+            }
+
             count = collection.count_documents(query)
-            flat_results[f"{key}_{window_minutes}m_velocity"]=count
-            #print(f"[DEBUG] Count : {count}")
-            #results[key][f"{window_minutes}m"] = count
-    
+
+            # 🌟 Nom plus explicite
+            label_map = {
+                "pan": "same_card_used",
+                "senderIP": "same_ip_used",
+                "email": "same_email_used",
+                "name": "same_name_used"
+            }
+            key_label = f"{label_map[key]}_in_last_{window_minutes}m"
+            flat_results[key_label] = count
+
     return flat_results
 
+
     
-def get_distinct_counts(transaction , now=None , collection=None):
-    distinct_check = {
-    "pan": ["extSenderInfo.name", "senderIP"],
-    "senderIP": ["extSenderInfo.pan"],
-    "extSenderInfo.name": ["extSenderInfo.pan"]
-}
-    default_window_minutes = {
-    "pan": 15,
-    "senderIP": 60,
-    "extSenderInfo.name": 300
-}
-    if now is None :
+def get_distinct_counts(transaction, now=None, collection=None):
+    if now is None:
         now = datetime.now(timezone.utc)
     if collection is None:
         collection = get_transactions_collection()
-  
+
     field_mapping = {
-        "pan" : "extSenderInfo.pan",
-        "senderIP":"senderIP",
-        "extSenderInfo.name":"extSenderInfo.name"
+        "pan": "extSenderInfo.pan",
+        "senderIP": "senderIP",
+        "extSenderInfo.name": "extSenderInfo.name"
     }
-    flat_results={}
-    
-    for main_field, distinct_fields in distinct_check.items() : 
-        mapped_field = field_mapping.get(main_field,main_field)
-        main_value = get_nested_value(transaction , mapped_field)
+
+    flat_results = {}
+
+    for main_field, distinct_fields in distinct_check.items():
+        main_value = get_nested_value(transaction, field_mapping[main_field])
         if not main_value:
             continue
-        
+
         window = default_window_minutes.get(main_field, 60)
         since = now - timedelta(minutes=window)
 
         for distinct_field in distinct_fields:
             query = {
-                mapped_field: main_value,
+                field_mapping[main_field]: main_value,
                 "createdAt": {"$gte": since}
             }
-            count = len(collection.distinct(distinct_field, query))
-            key = f"{field_name(main_field)}_distinct_{field_name(distinct_field)}_{window}m"
-            flat_results[key] = count
+
+            distinct_values = collection.distinct(distinct_field, query)
+            count = len(distinct_values)
+
+            # 🌟 Libellés explicites
+            readable_map = {
+                ("pan", "extSenderInfo.name"): "same_card_used_by_multiple_names",
+                ("pan", "senderIP"): "same_card_used_from_multiple_ips",
+                ("senderIP", "extSenderInfo.pan"): "same_ip_used_by_multiple_cards",
+                ("extSenderInfo.name", "extSenderInfo.pan"): "same_name_used_with_multiple_cards"
+            }
+
+            label = readable_map.get((main_field, distinct_field),
+                                     f"{field_name(main_field)}_to_{field_name(distinct_field)}")
+
+            flat_results[f"{label}_last_{window}m"] = count
 
     return flat_results
+
         
 def get_nested_value(dct , dotted_key):
     keys = dotted_key.split('.')

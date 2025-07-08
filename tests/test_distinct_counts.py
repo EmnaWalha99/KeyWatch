@@ -63,8 +63,8 @@ def test_distinct_count_returns_correct_counts(mock_collection):
     }
     result = get_distinct_counts(transaction , now=now , collection=mock_collection)
     print(result.keys())
-    assert result["pan_distinct_extSenderInfo_name_15m"]==3
-    assert result["pan_distinct_senderIP_15m"] ==3
+    assert result["same_card_used_by_multiple_names_last_15m"]==3
+    assert result["same_card_used_from_multiple_ips_last_15m"] ==3
     
     #test for senderIP
     transaction = { 
@@ -75,7 +75,7 @@ def test_distinct_count_returns_correct_counts(mock_collection):
     print(result.keys())
     
     #for senderip 1.1.1.1 should find 3 distinct pans (1111,1234, 5678)
-    assert result["senderIP_distinct_extSenderInfo_pan_60m"]== 3
+    assert result["same_ip_used_by_multiple_cards_last_60m"]== 3
     
     #test for extSenderInfo.name
     transaction = { 
@@ -84,5 +84,5 @@ def test_distinct_count_returns_correct_counts(mock_collection):
         }
     result = get_distinct_counts(transaction , now=now , collection=mock_collection)
     print(result.keys())
-    assert result["extSenderInfo_name_distinct_extSenderInfo_pan_300m"]==2
+    assert result["same_name_used_with_multiple_cards_last_300m"]==2
     

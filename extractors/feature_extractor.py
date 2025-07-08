@@ -1,8 +1,11 @@
-from datetime import datetime, timezone
-from zoneinfo import ZoneInfo
-from dateutil.parser import isoparse
 from dataAccess.counting_transactions import get_distinct_counts , get_velocity_counts
 from config.db import get_transactions_collection
+from extractors.extract_sender_info import extract_sender_info
+from extractors.extract_location_info import extract_ip_info , extract_country
+from extractors.extract_time_info import extract_day , extract_late_hour
+from extractors.extract_card_and_payment_info import extract_pan_info , extract_amount , extract_fee_rate
+from extractors.extract_status import extract_status
+from extractors.extract_merchant_domain import extract_merchant_domain
 class FeatureExtractor:
     def __init__(self):
         pass
@@ -10,24 +13,24 @@ class FeatureExtractor:
     def extract_features(self, trnx_data):
         
         features ={}
-        features.update(self._extract_sender_info(trnx_data))
-        features.update(self._extract_ip_info(trnx_data))   
+        features.update(extract_sender_info(trnx_data))
+        features.update(extract_ip_info(trnx_data))   
         #amount
-        features.update(self._extract_amount(trnx_data))
-        features.update(self._extract_merchant_domain(trnx_data))
+        features.update(extract_amount(trnx_data))
+        features.update(extract_merchant_domain(trnx_data))
 
-        features.update(self._extract_late_hour(trnx_data))
-        features.update(self._extract_day(trnx_data))
-        features.update(self._extract_status(trnx_data))
-        features.update(self._extract_country(trnx_data))
-        features.update(self._extract_fee_rate(trnx_data))
-        features.update(self._extract_pan_info(trnx_data))
+        features.update(extract_late_hour(trnx_data))
+        features.update(extract_day(trnx_data))
+        features.update(extract_status(trnx_data))
+        features.update(extract_country(trnx_data))
+        features.update(extract_fee_rate(trnx_data))
+        features.update(extract_pan_info(trnx_data))
         
         collection = get_transactions_collection()
         features.update(get_velocity_counts(trnx_data,collection=collection))
         features.update(get_distinct_counts(trnx_data))
         return features
-    
+"""    
     def _extract_amount(self,data):
         amount = data.get('amount',0)
         
@@ -35,6 +38,7 @@ class FeatureExtractor:
             'amount'  : amount , 
             'big_amount': 1 if amount > 1000000 else 0
         }
+
     def _extract_late_hour(self, data):
         try:
             utc_paid_at = data.get("paidAt", {}).get("$date", None)
@@ -70,6 +74,7 @@ class FeatureExtractor:
                 "local_hour": None,
                 "is_late_night": 0
             }
+            
     def _extract_day(self, data):
         try:
             utc_paid_at = data.get("paidAt", {}).get("$date", None)
@@ -89,22 +94,7 @@ class FeatureExtractor:
                 "is_weekend": 0
             }
             
-    def _extract_status(self, data):
-        try : 
-            status = data.get("status", "unknown")
-            status_risk = 1 if data.get("status") in ["failed_payment", "rejected"] else 0
-            failure_contains_low_balance=int("low balance" in str(data.get("details","")).lower() or "insufficient" in str(data.get("details","")).lower())
-            return {
-                "status": status,
-                "status_failure_risk": status_risk,
-                "failure_contains_low_balance": failure_contains_low_balance
-            }
-       
-        except Exception as e :
-            print("[ERROR] Status extraction failed:", e)
-            return {
-                "status": "unknown"
-            }
+    
     
     def _extract_country(self, data):
         try:
@@ -125,7 +115,7 @@ class FeatureExtractor:
                 "country": "unknown" ,
                 "txn_country": "unknown"
             }  
-            
+      
     def _extract_merchant_domain(self, data):
         try:
             merchant_domain = data.get("requestOrigin", "")
@@ -137,6 +127,7 @@ class FeatureExtractor:
             return {
                 "merchant_domain": "unknown"
             }
+    
     def _extract_ip_info(self, data):
         try:
             ip_info = data.get("senderIpInformation", {})
@@ -156,7 +147,10 @@ class FeatureExtractor:
                 "isp": "unknown",
                 "is_mobile": "unknown"
                 
-            }   
+            }  
+            
+            
+    
     def _extract_sender_info(self, data):
         try:
            email=data.get("extSenderInfo",{}).get("email","")
@@ -176,7 +170,7 @@ class FeatureExtractor:
                 #"has_email": 0,
                 "name": "unknown"
                 #"has_name": 0
-            }
+            } 
     def _extract_fee_rate(self, data):
         try:
             fee_rate = data.get("feeRate", None)
@@ -188,18 +182,8 @@ class FeatureExtractor:
             return {
                 "fee_rate": None
             }
-    def _extract_pan_info(self, data):
-        try:
-            pan = data.get("extSenderInfo", {}).get("pan", "")
-            bin_code = pan[:6] if len(pan) >= 6 else None
-            return {
-                "bin": bin_code
-            }
-        except Exception as e:
-            print("[ERROR] PAN extraction failed:", e)
-            return {
-                "bin": None
-            }
+            """
+    
 
 
             

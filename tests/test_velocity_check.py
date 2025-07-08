@@ -42,6 +42,6 @@ def test_velocity_check_returns_correct_counts(mock_collection):
 
     result = get_velocity_counts(transaction, now=now, collection=mock_collection)
 
-    assert result["pan_15m_velocity"] == 5
-    assert result["senderIP_60m_velocity"] == 5
-    assert result["name_300m_velocity"]== 5
+    assert result["same_card_used_in_last_15m"] == 5
+    assert result["same_ip_used_in_last_60m"] == 5
+    assert result["same_name_used_in_last_300m"]== 5
