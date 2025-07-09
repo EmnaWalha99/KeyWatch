@@ -107,7 +107,6 @@ def get_distinct_counts(transaction, now=None, collection=None):
             distinct_values = collection.distinct(distinct_field, query)
             count = len(distinct_values)
 
-            # 🌟 Libellés explicites
             readable_map = {
                 ("pan", "extSenderInfo.name"): "same_card_used_by_multiple_names",
                 ("pan", "senderIP"): "same_card_used_from_multiple_ips",

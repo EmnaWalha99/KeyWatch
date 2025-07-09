@@ -1,7 +1,7 @@
 def extract_status(data):
         try : 
             status = data.get("status", "unknown")
-            status_risk = 1 if data.get("status") in ["failed_payment", "rejected"] else 0
+            status_risk = 1 if data.get("status") in ["failed_payment", "blocked",] else 0
             failure_contains_low_balance=int("low balance" in str(data.get("details","")).lower() or "insufficient" in str(data.get("details","")).lower())
             return {
                 "status": status,

@@ -1,3 +1,6 @@
+from dataAccess.find_last_trnx import find_last_transaction_with_pan
+from config.db import get_transactions_collection
+import math
 def extract_ip_info(data):
         try:
             ip_info = data.get("senderIpInformation", {})
@@ -43,23 +46,93 @@ def extract_ip_info(data):
                 
             }
             
-def extract_country(data):
-        try:
-            ip_country =data.get("senderIpInformation", {}).get("country", "unknown")
-            txn_country = data.get("extSenderInfo", {}).get("bankInfo", {}).get("bankCountryName", "unknown")
-            country_mismatch = int(ip_country.lower() != txn_country.lower() and ip_country != "unknown" and txn_country != "unknown")
-            bank_country_code = data.get("extSenderInfo", {}).get("bankInfo", {}).get("bankCountryCode", "unknown")
-            
-            return {
-                "ip_country": ip_country,
-                "txn_country": txn_country,
-                "bank_country_code": bank_country_code,
-                "country_mismatch": country_mismatch
-            }
-        except Exception as e:
-            print("[ERROR] Country extraction failed:", e)
-            return {
-                "country": "unknown" ,
-                "txn_country": "unknown"
-            }  
-            
+def haversine(coord1 , coord2): # calculating distance between two coordinates 
+    lon1 , lat1 = coord1
+    lon2 , lat2 = coord2
+    R = 6371 # le rayonn de la terre en KM
+    phi1 = math.radians(lat1)
+    phi2 = math.radians(lat2)
+    dphi = math.radians(lat2-lat1)
+    dlambda = math.radians(lon2 -lon1)
+    a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+    return 2 * R * math.asin(math.sqrt(a))
+
+
+def extract_country_mismatch(data):
+    try: 
+        ip_country = data.get("senderIpInformation",{}).get("country","unknown")
+        bank_country_name = data.get("extSenderInfo",{}).get("bankInfo" ,{}).get("bankCountryName","unknown")
+        country_mismatch = int(ip_country.lower() != bank_country_name.lower()and ip_country !="unknown" and bank_country_name!="unknown")
+        return {
+            "ip_country_and_bank_country_mismatch": country_mismatch
+        }
+    except Exception as e: 
+        print("[ERROR] Country extraction failed:", e)
+        return {
+            "ip_country_and_bank_country_mismatch" : "unknown"
+        }
+       
+def extract_impossible_travel(data):
+    try:
+        current_location = data.get("senderIpLocation", {}).get("coordinates")
+        current_time = data.get("createdAt")
+        collection = get_transactions_collection()
+        last_trx = find_last_transaction_with_pan(data,collection)
+        if not last_trx:
+            return {"impossible_travel": 0}
+
+        last_location = last_trx.get("senderIpLocation", {}).get("coordinates")
+        last_time = last_trx.get("createdAt")  # Fixed typo: should be "createdAt"
+
+        if not (last_location and last_time and current_location and current_time):
+            return {"impossible_travel": 0}
+
+        distance = haversine(current_location, last_location)
+        # Ensure both times are datetime objects
+        if hasattr(current_time, "timestamp") and hasattr(last_time, "timestamp"):
+            time_difference_hours = (current_time - last_time).total_seconds() / 3600.0
+        else:
+            return {"impossible_travel": 0}
+
+        if time_difference_hours == 0:
+            return {"impossible_travel": 0}
+
+        speed = distance / time_difference_hours
+        impossible = int(speed > 1000)  # Threshold: 1000 km/h
+
+        return {
+            "impossible_travel": impossible,
+            "time_difference_with_last_trnx_h": time_difference_hours,
+            "travel_distance_km": distance,
+            "travel_speed_kmh": speed
+        }
+    except Exception as e:
+        print("[ERROR] error occurred during extracting impossible travel feature:", e)
+        return {
+            "impossible_travel": "unknown"
+        }
+        
+    
+    
+def extract_frequent_timezone_switch(data , collection=None , n=3 , threshold=2) : 
+    if collection is None :
+        from config.db import get_transactions_collection
+        collection = get_transactions_collection()
+    pan = data.get("extSenderInfo", {}).get("pan")
+    if not pan : 
+        return {"frequent_timezone_switch": 0 , "unique_timezones":0}
+    cursor = collection.find(
+        {"extSenderInfo.pan": pan, "senderIpInformation.timezone": {"$exists": True}},
+        sort=[("createdAt", -1)],
+        limit=n
+    )
+    timezones = set()
+    for trnx in cursor:
+        tz = trnx .get("senderIPInformation", {}).get("timezone")
+        if tz:
+            timezones.add(tz)
+    return {
+        "frequent_timezone_switch": int(len(timezones)>= threshold),
+        "unique_timezones" : len(timezones)
+    }
+        
