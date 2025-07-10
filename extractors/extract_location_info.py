@@ -1,6 +1,9 @@
 from dataAccess.find_last_trnx import find_last_transaction_with_pan
 from config.db import get_transactions_collection
+from dateutil.parser import parse
+from datetime import timezone
 import math
+#from datetime import total_seconds
 def extract_ip_info(data):
         try:
             ip_info = data.get("senderIpInformation", {})
@@ -72,27 +75,60 @@ def extract_country_mismatch(data):
             "ip_country_and_bank_country_mismatch" : "unknown"
         }
        
-def extract_impossible_travel(data):
+def extract_impossible_travel(data, collection=None):
+    from dateutil.parser import parse 
     try:
+        if collection is None : 
+            collection = get_transactions_collection()
         current_location = data.get("senderIpLocation", {}).get("coordinates")
         current_time = data.get("createdAt")
-        collection = get_transactions_collection()
+        #collection = get_transactions_collection()
         last_trx = find_last_transaction_with_pan(data,collection)
         if not last_trx:
-            return {"impossible_travel": 0}
+            return {"impossible_travel": 0,
+                    "time_difference_with_last_trnx_h": None,
+                    "travel_distance_km": None,
+                    "travel_speed_kmh": None
+                    }
 
         last_location = last_trx.get("senderIpLocation", {}).get("coordinates")
-        last_time = last_trx.get("createdAt")  # Fixed typo: should be "createdAt"
+        last_time = last_trx.get("createdAt")
 
+        
+        #parsing datetimes 
+        if isinstance(current_time, dict) and "$date" in current_time:
+            current_time = current_time["$date"]
+        if isinstance(last_time, dict) and "$date" in last_time:
+            last_time = last_time["$date"]
+
+        #from dateutil.parser import parse
+        if isinstance(current_time, str):
+            current_time = parse(current_time)
+        if isinstance(last_time, str):
+            last_time = parse(last_time)  
+        
+        # timezone 
+        if current_time.tzinfo is None : 
+            current_time = current_time.replace(tzinfo=timezone.utc)
+        if last_time.tzinfo is None : 
+            last_time = last_time.replace(tzinfo=timezone.utc)
+        
         if not (last_location and last_time and current_location and current_time):
-            return {"impossible_travel": 0}
+            print("DEBUG impossible_travel:")
+            print("  current_location:", current_location)
+            print("  current_time:", current_time)
+            print("  last_location:", last_location)
+            print("  last_time:", last_time)
+            return {"impossible_travel": 0,"problem here" :1}
 
         distance = haversine(current_location, last_location)
-        # Ensure both times are datetime objects
+        """
         if hasattr(current_time, "timestamp") and hasattr(last_time, "timestamp"):
             time_difference_hours = (current_time - last_time).total_seconds() / 3600.0
         else:
             return {"impossible_travel": 0}
+        """
+        time_difference_hours = (current_time - last_time).total_seconds() / 3600.0
 
         if time_difference_hours == 0:
             return {"impossible_travel": 0}
@@ -114,7 +150,7 @@ def extract_impossible_travel(data):
         
     
     
-def extract_frequent_timezone_switch(data , collection=None , n=3 , threshold=2) : 
+def extract_frequent_timezone_switch(data , collection=None , n=10 , threshold=3) : 
     if collection is None :
         from config.db import get_transactions_collection
         collection = get_transactions_collection()
@@ -128,9 +164,11 @@ def extract_frequent_timezone_switch(data , collection=None , n=3 , threshold=2)
     )
     timezones = set()
     for trnx in cursor:
-        tz = trnx .get("senderIPInformation", {}).get("timezone")
+        tz = trnx .get("senderIpInformation", {}).get("timezone")
         if tz:
             timezones.add(tz)
+    print("[DEBUG] timezones : " , timezones)
+
     return {
         "frequent_timezone_switch": int(len(timezones)>= threshold),
         "unique_timezones" : len(timezones)

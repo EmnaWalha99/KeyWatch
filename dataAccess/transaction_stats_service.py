@@ -33,6 +33,7 @@ class TransactionStatsService:
         if not amounts : 
             return 0 
         return sum(amounts)/len(amounts)
+    
 
 
 

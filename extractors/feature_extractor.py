@@ -13,6 +13,7 @@ from extractors.extract_card_and_payment_info import (
     extract_pan_info,
     extract_amount,
     extract_fee_rate,
+    extract_avg_amount_last_7d
 )
 from extractors.extract_status import extract_status
 from extractors.extract_merchant_domain import extract_merchant_domain
@@ -31,7 +32,7 @@ class FeatureExtractor:
             extract_day,
             extract_status,
             extract_country_mismatch,
-            extract_impossible_travel,
+            #extract_impossible_travel,
             extract_fee_rate,
             extract_pan_info,
         ]
@@ -48,6 +49,8 @@ class FeatureExtractor:
 
         # extractors that need collection or special args
         try:
+            features.update(extract_impossible_travel(trnx_data , collection = self.collection))
+            features.update(extract_avg_amount_last_7d(trnx_data,collection = self.collection))
             features.update(
                 extract_frequent_timezone_switch(
                     trnx_data, collection=self.collection, n=3, threshold=2

@@ -62,9 +62,9 @@ class MockCollection :
 def test_extract_frequent_timezone_switch():
     #3 transactions with 3 different timezones
     docs = [
-        {"senderIPInformation": {"timezone": "Europe/Paris"}},
-        {"senderIPInformation": {"timezone": "Africa/Tunis"}},
-        {"senderIPInformation": {"timezone": "Asia/Dubai"}},
+        {"senderIpInformation": {"timezone": "Europe/Paris"}},
+        {"senderIpInformation": {"timezone": "Africa/Tunis"}},
+        {"senderIpInformation": {"timezone": "Asia/Dubai"}},
     ]
     collection = MockCollection(docs)
     data = {"extSenderInfo": {"pan":"1234"}}
@@ -75,9 +75,9 @@ def test_extract_frequent_timezone_switch():
 def test_extract_frequent_timezone_switch_not_frequent():
     # Simulate 3 transactions with the same timezone
     docs = [
-        {"senderIPInformation": {"timezone": "Europe/Paris"}},
-        {"senderIPInformation": {"timezone": "Europe/Paris"}},
-        {"senderIPInformation": {"timezone": "Europe/Paris"}},
+        {"senderIpInformation": {"timezone": "Europe/Paris"}},
+        {"senderIpInformation": {"timezone": "Europe/Paris"}},
+        {"senderIpInformation": {"timezone": "Europe/Paris"}},
     ]
     collection = MockCollection(docs)
     data = {"extSenderInfo": {"pan": "1234"}}

@@ -16,7 +16,7 @@ def create_transaction(
     city="Mégrine",
     lat=36.7707,
     lon=10.2404,
-    timezone="Africa/Tuis",
+    timezone="Africa/TUNI",
     country="Tunisia"
 ):
     now = datetime.now(pytz.utc)
