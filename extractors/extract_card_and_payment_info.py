@@ -5,11 +5,13 @@ def extract_pan_info(data):
             pan = data.get("extSenderInfo", {}).get("pan", "")
             bin_code = pan[:6] if len(pan) >= 6 else None
             return {
+                "pan" : pan,
                 "bin": bin_code
             }
         except Exception as e:
             print("[ERROR] PAN extraction failed:", e)
             return {
+                "pan": None , 
                 "bin": None
             }
 def extract_amount(data):

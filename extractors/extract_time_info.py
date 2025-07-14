@@ -56,3 +56,4 @@ def extract_day(data):
                 "day_of_week": None,
                 "is_weekend": 0
             }
+            
