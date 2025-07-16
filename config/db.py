@@ -1,5 +1,5 @@
 from pymongo import MongoClient
-from config.settings import MONGO_URI, DB_NAME, COLLECTION_NAME
+from config.settings import MONGO_URI, DB_NAME, COLLECTION_NAME  , LOGS_COLLECTION
 
 def get_mongo_client():
     
@@ -20,3 +20,12 @@ def get_transactions_collection():
         print(f"[ERROR] Failed to get transactions collection: {e}")
         return None
         
+def get_logs_collection():
+    try : 
+        collection = get_mongo_client()[DB_NAME][LOGS_COLLECTION]
+        print(f"[INFO] Successfully accessed logs collection in '{DB_NAME}'")
+        return collection
+    except Exception as e : 
+        print(f"[ERROR] Failed to get logs collection: {e}")
+        return None
+    

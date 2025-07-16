@@ -1,4 +1,4 @@
-# 🎴 R1xx - Card & Payment Behavior
+# R1xx - Card & Payment Behavior
 
 - id: R100
   name: pan_velocity_15m
@@ -17,7 +17,7 @@
   context_field: pan
   condition: "gt"
   threshold: 7
-  score: 25
+  score: 30
   reason: "The card has been used unusually often in the past hour, which may indicate fraudulent reuse."
 
 - id: R102
@@ -39,7 +39,7 @@
     - name
   condition: "gt"
   threshold: 0
-  score: 30
+  score: 40
   reason: "The same card was recently used under different names, suggesting possible identity misuse or card sharing."
 
 - id: R104
@@ -54,9 +54,19 @@
   score: 30
   reason: "The same card was used from multiple IP addresses within a short time, which could indicate fraudulent distribution."
 
----
+- id: R105
+  name: big_amount
+  description: "Transaction exceeds a high threshold"
+  field: amount
+  condition: "gt"
+  threshold: 1000000
+  score: 30
+  reason: "This transaction amount is unusually large and may require additional review."
+  context_field: "amount"
 
-# 🌍 R2xx - Geolocation & IP Behavior
+
+
+# R2xx - Geolocation & IP Behavior
 
 - id: R200
   name: impossible_travel
@@ -82,7 +92,7 @@
   field: frequent_timezone_switch
   condition: "eq"
   threshold: 1
-  score: 20
+  score: 15
   reason: "The user has changed timezones multiple times recently, which can be a signal of suspicious activity (VPNs or multiple devices)."
 
 - id: R203
@@ -91,7 +101,7 @@
   field: same_ip_used_in_last_60m
   condition: "gt"
   threshold: 3
-  score: 40
+  score: 35
   reason: "This IP address was used for several transactions in a short time, potentially indicating shared or automated use."
 
 - id: R204
@@ -103,9 +113,9 @@
   score: 30
   reason: "Multiple card numbers were used from the same IP recently, which may indicate fraud rings or bot behavior."
 
----
 
-# ⏰ R3xx - Timing Behavior
+
+#R3xx - Timing Behavior
 
 - id: R300
   name: late_night_weekend
@@ -117,12 +127,12 @@
     field: is_weekend
     condition: "eq"
     threshold: 1
-  score: 15
+  score: 10
   reason: "This transaction was made late at night during the weekend, which can be a risky time for fraud."
 
----
 
-# 🔐 R4xx - Network & Hosting Indicators
+
+#R4xx - Network & Hosting Indicators
 
 - id: R400
   name: proxy_detected
@@ -142,9 +152,8 @@
   score: 15
   reason: "The IP address used belongs to a hosting provider, often associated with bot or automated activity."
 
----
 
-# 👤 R5xx - User Identity
+#R5xx - User Identity
 
 - id: R500
   name: missing_email
@@ -179,5 +188,5 @@
   field: same_name_used_with_multiple_cards_last_300m
   condition: "gt"
   threshold: 0
-  score: 20
+  score: 25
   reason: "The same name was used with multiple card numbers, which could mean identity theft or fraud pattern reuse."

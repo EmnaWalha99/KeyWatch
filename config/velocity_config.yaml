@@ -1,0 +1,38 @@
+velocity_check:
+  pan: [15, 60]
+  senderIP: [60]
+  email: [300]
+  name: [300]
+
+distinct_check:
+  pan:
+    - extSenderInfo.name
+    - senderIP
+  senderIP:
+    - extSenderInfo.pan
+  extSenderInfo.name:
+    - extSenderInfo.pan
+
+default_window_minutes:
+  pan: 15
+  senderIP: 60
+  extSenderInfo.name: 300
+
+label_map:
+  pan: same_card_used
+  senderIP: same_ip_used
+  email: same_email_used
+  name: same_name_used
+
+readable_map:
+  "pan__extSenderInfo.name": same_card_used_by_multiple_names
+  "pan__senderIP": same_card_used_from_multiple_ips
+  "senderIP__extSenderInfo.pan": same_ip_used_by_multiple_cards
+  "extSenderInfo.name__extSenderInfo.pan": same_name_used_with_multiple_cards
+
+field_mapping:
+  pan: extSenderInfo.pan
+  senderIP: senderIP
+  email: extSenderInfo.email
+  name: extSenderInfo.name
+  extSenderInfo.name: extSenderInfo.name

@@ -1,11 +1,11 @@
 from fastapi import FastAPI
 from extractors.feature_extractor import FeatureExtractor
 from rules.rule_engine import RuleEngine
+from dataAccess.logging import log_transaction
 
 app = FastAPI(title="Key Watch")
 extractor = FeatureExtractor()
-rule_engine= RuleEngine(config_path="rules/rule_config.json")
-
+rules_engine = RuleEngine("rules/rules.yaml")
 @app.post("/extract-features")
 def extract_features(transaction_data : dict):
   
@@ -25,9 +25,13 @@ def extract_features(transaction_data : dict):
 def apply_rules(transaction_data: dict):
     try:
         features = extractor.extract_features(transaction_data)
-        result = rule_engine.apply_rules(features)
+        result = rules_engine.evaluate(features)
+        
+        #loggin the transactions 
+        log_transaction(transaction_data, features, result)
+
         return {
-            "status": "success",
+            "status": "evaluating data successfully",
             "features": features,
             "fraud_result": result
         }

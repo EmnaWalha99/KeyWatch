@@ -19,7 +19,6 @@ def extract_amount(data):
         
         return {
             'amount'  : amount , 
-            'big_amount': 1 if amount > 1000000 else 0
         }
 
 def extract_avg_amount_last_7d(data, collection=None):

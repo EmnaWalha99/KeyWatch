@@ -7,11 +7,10 @@ import uuid
 client = MongoClient("mongodb://localhost:27017")  # or your connection string
 db = client["fraud-detection"]
 collection = db["transactions"]
-
 def create_transaction(
-    pan="521265**8212",
+    pan="521265**8210",
     name="SAMI SGHAIER",
-    amount=3252000,
+    amount=3252000000,
     ip="197.26.95.0",
     city="Mégrine",
     lat=36.7707,
