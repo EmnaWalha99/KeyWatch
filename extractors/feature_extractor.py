@@ -21,7 +21,7 @@ from extractors.extract_merchant_domain import extract_merchant_domain
 
 class FeatureExtractor:
     def __init__(self, collection=None):
-        self.collection = collection or get_transactions_collection()
+        self.collection = collection if collection is not None else get_transactions_collection()
 
         self.extractors = [
             extract_sender_info,
