@@ -48,7 +48,7 @@ def apply_rules(transaction_data: dict):
         with FEATURE_EXTRACTION_TIME.time():
           features = extractor.extract_features(transaction_data)
         result = rules_engine.evaluate(features)
-        TRANSACTION_COUNT.inc()
+        #TRANSACTION_COUNT.inc()
 
         #loggin the transactions 
         log_transaction(transaction_data, features, result)
