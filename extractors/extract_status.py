@@ -1,3 +1,4 @@
+from dataAccess.count_failed_attemps import count_failed_attempts
 def extract_status(data):
         try : 
             status = data.get("status", "unknown")
@@ -14,3 +15,23 @@ def extract_status(data):
             return {
                 "status": "unknown"
             }
+            
+def extract_many_failed_attempts(data):
+    try:
+        number = count_failed_attempts(data)
+        #print("number of failed attemps : ", number)
+        if number is not None and number > 3 : 
+            return {
+                "number_of_failed_attempts" : number , 
+                "many_failed_attempts" : 1
+            }
+        else : 
+            return{
+                "many_failed_attempts" : 0
+            }
+                    
+    except Exception as e : 
+        print(f"[ERROR] during extracting failed attempts: {e}") 
+        return {
+            "many_failed_attempts" : None
+        }

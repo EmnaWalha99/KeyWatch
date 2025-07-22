@@ -28,7 +28,7 @@ def create_transaction(
         "receiverWallet": str(uuid.uuid4()),
         "underVerification": False,
         "hidden": False,
-        "status": "success",
+        "status": "failed_payment",
         "note": {"attachments": []},
         "comments": [],
         "token": "TND",

@@ -15,7 +15,7 @@ from extractors.extract_card_and_payment_info import (
     extract_fee_rate,
     extract_avg_amount_last_7d
 )
-from extractors.extract_status import extract_status
+from extractors.extract_status import extract_status , extract_many_failed_attempts
 from extractors.extract_merchant_domain import extract_merchant_domain
 
 
@@ -31,6 +31,7 @@ class FeatureExtractor:
             extract_late_hour,
             extract_day,
             extract_status,
+            extract_many_failed_attempts,
             extract_country_mismatch,
             #extract_impossible_travel,
             extract_fee_rate,
