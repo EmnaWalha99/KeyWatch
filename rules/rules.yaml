@@ -194,5 +194,9 @@
 
 - id: R600
   name: many_failed_attempts
-  description: "Same PAN many failed attempts in a short time"
-  
+  description: "Same PAN has many failed attempts in a short time"
+  field: many_failed_attempts
+  condition: "eq"
+  threshold: 1
+  score: 40
+  reason: "Multiple failed transactions were attempted using the same card (PAN) in a short time window, which may indicate brute-force or bot activity."
