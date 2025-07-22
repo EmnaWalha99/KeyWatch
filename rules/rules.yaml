@@ -190,3 +190,9 @@
   threshold: 0
   score: 25
   reason: "The same name was used with multiple card numbers, which could mean identity theft or fraud pattern reuse."
+
+
+- id: R600
+  name: many_failed_attempts
+  description: "Same PAN many failed attempts in a short time"
+  
