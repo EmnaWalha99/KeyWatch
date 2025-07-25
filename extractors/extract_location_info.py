@@ -67,6 +67,7 @@ def extract_country_mismatch(data):
         bank_country_name = data.get("extSenderInfo",{}).get("bankInfo" ,{}).get("bankCountryName","unknown")
         country_mismatch = int(ip_country.lower() != bank_country_name.lower()and ip_country !="unknown" and bank_country_name!="unknown")
         return {
+            "bank_country_name" : bank_country_name,
             "ip_country_and_bank_country_mismatch": country_mismatch
         }
     except Exception as e: 
