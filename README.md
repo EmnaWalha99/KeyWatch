@@ -1,56 +1,69 @@
+# 📘 KeyWatch - Documentation Technique Complète
 
-# KeyWatch - Microservice de Détection de Fraude
-
-## 🧾 Introduction
-
-**KeyWatch** est un microservice standalone de détection de fraude développé pour **Konnect Networks**, une passerelle de paiement en ligne. Il est conçu avec une architecture **modulaire, scalable et évolutive**, capable de combiner des règles statiques et, potentiellement à terme, un moteur décisionnel ML.
-
-Le service reçoit en entrée une transaction, effectue une **extraction automatique des données comportementales et contextuelles**, puis applique un moteur de règles configurable pour déterminer le **score de risque de fraude** et **recommander une action** (`allow`, `manual_review`, `block`, etc.).
+**KeyWatch** est un microservice de détection de fraude construit en Python avec FastAPI et MongoDB, conçu pour analyser des transactions bancaires en temps réel. Il repose sur un système modulaire d'extraction de features et un moteur de règles déclaratives (YAML).
 
 ---
 
-## Architecture Générale
+## 🚀 Prérequis & Installation
 
-### Composants principaux :
-- **FastAPI** : API REST exposant les endpoints.
-- **MongoDB** : base de données des transactions pour les vérifications d'historique.
-- **Feature Extractor** : extraction des patterns de fraude connus (vélocité, géolocalisation, comportement).
-- **RuleEngine** : moteur de règles basé sur YAML.
-- **Scoreur** : calcule le score de fraude selon les règles déclenchées.
+### 1. Cloner le repo
 
-> 🧪 (à venir) Device fingerprinting comme nouvelle source de features.
-
-### Arborescence du projet :
-```
-/config
-/dataAccess
-/extractors
-/models
-/rules
-/tests
-/transaction_formats
-main.py
+```bash
+git clone https://github.com/EmnaWalha99/KeyWatch.git
+cd KeyWatch
 ```
 
----
+### 2. Créer un environnement virtuel
 
-## Installation & Démarrage
-
-### Création de l’environnement virtuel :
 ```bash
 python -m venv venv
-source venv/bin/activate  # sous Linux/Mac
-venv\Scripts\activate   # sous Windows
+source venv/bin/activate  # Linux/macOS
+venv\Scripts\activate   # Windows
+```
+
+### 3. Installer les dépendances
+
+```bash
 pip install -r requirements.txt
 ```
 
-### Lancer le microservice :
+### 4. Lancer l'application
+
 ```bash
 uvicorn main:app --reload
 ```
 
 ---
 
+## 🧱 Stack Technique
+
+### 🔹 Backend
+
+* **Langage** : Python 3.11+
+* **Framework** : FastAPI
+
+### 🔹 Base de données
+
+* **MongoDB** 
+* **Nom de la base** : `fraud-detection`
+* **Collections** :
+
+  * `transactions` : transactions brutes reçues
+  * `Logs` : logs des transactions traitées avec features + résultat
+
+---
+
+## 📂 Structure Principale du Projet
+
+```
+/config             -> Connexion DB et chargement .env
+/extractors         -> Modules d'extraction de features
+/rules              -> Moteur de règles YAML
+/dataAccess         -> Accès à MongoDB, stats historiques
+/transaction_formats -> Exemples de payloads JSON
+/tests              -> Unit tests (pytest)
+main.py             -> Entrée FastAPI
+```
 ## Endpoints disponibles
 
 | Méthode | URL                             | Description                         |
@@ -235,80 +248,194 @@ uvicorn main:app --reload
 
 ---
 
-## Exemple de règles YAML
+## 🔌 Fichier `main.py` - FastAPI Entrypoint
 
-```yaml
-# R1xx - Card & Payment Behavior
+```python
 
-- id: R100
-  name: pan_velocity_15m
-  description: "Same card used more than 3 times in 15 minutes"
-  field: same_card_used_in_last_15m
-  context_field: pan
-  condition: "gt"
-  threshold: 3
-  score: 50
-  reason: "The same card was used more than 3 times in 15 minutes, which may indicate automated or suspicious activity."
+app = FastAPI(title="Key Watch")
+extractor = FeatureExtractor()
+rules_engine = RuleEngine("rules/rules.yaml")
 
-#R5xx - User Identity
+@app.post("/extract-features")
+def extract_features(transaction_data: dict):
 
-- id: R500
-  name: missing_email
-  description: "Email field is empty"
-  field: has_email
-  condition: "eq"
-  threshold: 0
-  score: 10
-  reason: "No email address was provided in this transaction, which may reduce traceability and increase risk."
+@app.post("/apply-rules")
+def apply_rules(transaction_data: dict):
 
-
-#R3xx - Timing Behavior
-
-- id: R300
-  name: late_night_weekend
-  description: "Transaction at night during weekend"
-  field: is_late_night
-  condition: "eq"
-  threshold: 1
-  extra_condition:
-    field: is_weekend
-    condition: "eq"
-    threshold: 1
-  score: 10
-  reason: "This transaction was made late at night during the weekend, which can be a risky time for fraud."
-
-
-# R2xx - Geolocation & IP Behavior
-
-- id: R200
-  name: impossible_travel
-  description: "Travel speed exceeds plausible maximum"
-  field: impossible_travel
-  condition: "eq"
-  threshold: 1
-  score: 40
-  reason: "This user appears to have made a transaction from a location too far from the previous one in an unrealistic time, suggesting fraud."
-
+@app.get("/")
+def root():
 ```
 
 ---
 
-## Features extraites
+## 📁 config/ – Connexion à MongoDB
 
-Quelques exemples de features générées automatiquement :
-- `has_email`, `has_name`
-- `amount`, `avg_amount_last_7d`
-- `is_late_night`, `is_weekend`, `day_of_week`
-- `status_failure_risk`, `failure_contains_low_balance`
-- `ip_country_and_bank_country_mismatch`
-- `time_difference_with_last_trnx_h`
-- `impossible_travel`
-- `same_card_used_in_last_15m`, `same_ip_used_in_last_60m`
-- `same_name_used_with_multiple_cards_last_300m`
-- `same_ip_used_by_multiple_cards_last_60m`
+### `.env`
 
+Contient les paramètres sensibles :
+
+```env
+MONGO_URI = mongodb://localhost:27017
+DB_NAME = fraud-detection
+COLLECTION_NAME = transactions
+LOGS_COLLECTION = Logs
+```
+
+### `settings.py`
+
+Utilise `python-decouple` pour charger les variables de `.env` :
+
+```python
+from decouple import Config, RepositoryEnv
+config = Config(repository=RepositoryEnv("config/.env"))
+MONGO_URI = config("MONGO_URI")
+DB_NAME = config("DB_NAME")
+COLLECTION_NAME = config("COLLECTION_NAME")
+LOGS_COLLECTION = config("LOGS_COLLECTION")
+```
+
+### `db.py`
+
+Expose les accès aux collections MongoDB :
+
+```python
+from pymongo import MongoClient
+from config.settings import MONGO_URI, DB_NAME, COLLECTION_NAME, LOGS_COLLECTION
+
+def get_mongo_client():
+    return MongoClient(MONGO_URI)
+
+def get_transactions_collection():
+    client = get_mongo_client()
+    return client[DB_NAME][COLLECTION_NAME]
+
+def get_logs_collection():
+    client = get_mongo_client()
+    return client[DB_NAME][LOGS_COLLECTION]
+```
 
 ---
+
+## 📁 extractors/ – Moteur d’extraction de features
+
+Ce dossier contient tous les modules d’analyse statique de la transaction. Chaque fichier correspond à une catégorie de features.
+
+### ✅ `extract_status.py`
+
+* `extract_status(data)` : extrait le champ `status` et flag le status_failure_risk=1 en cas de failed_payment
+* `extract_many_failed_attempts(data)` : détecte plus de 3 échecs de paiement
+
+### 🕓 `extract_time_info.py`
+
+* `extract_late_hour(data)` : calcule l’heure locale du paiement + `is_late_night`
+* `extract_day(data)` : jour de la semaine + détection week-end
+
+### 👤 `extract_sender_info.py`
+
+* `extract_sender_info(data)` : extrait nom + email + flags `has_name`, `has_email`
+
+### 🛍️ `extract_merchant_domain.py`
+
+* `extract_merchant_domain(data)` : isole le domaine marchand (utile contre phishing)
+
+### 🌍 `extract_location_info.py`
+
+Contient les méthodes géo-IP, incohérences et comportements suspects :
+
+* `extract_ip_info(data)` : ISP, ASN, proxy, hosting, lat/lon, etc.
+* `extract_country_mismatch(data)` : compare pays IP vs banque
+* `extract_impossible_travel(data)` : 🌌 Détecte un déplacement géographique impossible
+
+      Principe :
+
+      - Pour un même PAN, on récupère la dernière transaction
+
+      - On calcule la distance entre les deux IP (coordonnées)
+
+      - On calcule le temps entre les deux transactions
+
+      - Si la vitesse estimée > 1000 km/h → flag impossible_travel = 1
+
+      Exemples de fraude détectés :
+
+      - Utilisation d’une même carte à Tunis à 10h01 et à Tokyo à 10h15 (surement VPN ou vol)
+
+      - Multi-comptes avec partage de carte (fraude collaborative)
+* `extract_frequent_timezone_switch(...)` : mesure le nombre de fuseaux horaires différents utilisés pour un PAN dans les N dernières transactions. Flag si seuil dépassé.
+
+      Exemples de fraude :
+
+      - Changement très fréquent de timezone sur une période courte
+
+      - Comportement suspect de bots, attaques coordonnées
+
+### 💳 `extract_card_and_payment_info.py`
+
+* `extract_pan_info(data)` : extrait PAN + BIN
+* `extract_amount(data)` : montant brut de la transaction
+* `extract_avg_amount_last_7d(data)` : moyenne historique 7 jours (via `dataAccess.amount_stats`)
+* `extract_fee_rate(data)` : taux de frais appliqué
+
+
+
+
+
+
+## 🗃️ Module `dataAccess/` – Accès Données & Comportements Historiques
+
+Ce dossier regroupe les fonctions liées à l’analyse des historiques de transaction, telles que la moyenne d’achat, le nombre de tentatives échouées, ou encore les comportements suspects comme les "velocity attacks".
+
+### 💰 `amount_stats.py`
+
+* `get_avg_amount_last_7d(pan, collection=None)` :
+
+  * Calcule la **moyenne des montants** effectués par un PAN (carte) sur les **7 derniers jours**.
+  * Utile pour détecter un **montant anormalement élevé** par rapport à l’historique du client.
+
+### ❌ `count_failed_attempts.py`
+
+* `count_failed_attempts(transaction, collection=None, time_window_minutes=1)` :
+
+  * Compte le nombre d’**échecs de paiement** associés à un PAN dans une **fenêtre temporelle (ex: 1 min)**.
+  * Permet de détecter des **tentatives de brute-force** ou des bots.
+
+### 📈 `counting_transactions.py`
+
+Module clé pour la détection de **velocity** (fréquence anormale) et **diversité** (variations de comportements). Il repose sur un fichier `velocity_config.yaml` configurable.
+
+#### 🔁 `get_velocity_counts(transaction)`
+
+* Calcule combien de fois un **champ donné** (PAN, IP, email, etc.) a été utilisé dans une certaine **fenêtre de temps**.
+* Exemple : "La même IP utilisée 10 fois en 60 min" → `same_ip_used_in_last_60m`
+* Permet de détecter des **attaques massives à partir d’un même canal**.
+
+#### 🔀 `get_distinct_counts(transaction)`
+
+* Compte le **nombre de valeurs distinctes** associées à un champ :
+
+  * Ex: "Un même nom est lié à 5 PAN différents dans 30 minutes" → `name_to_pan_last_30m`
+* Indicateur de **fraude organisée ou multi-cartes**.
+
+#### 🧩 Fonctions utilitaires
+
+* `get_nested_value()` : accède à des champs imbriqués comme `extSenderInfo.pan`
+* `field_name()` : convertit une clé pointée en format lisible pour labels
+
+### 🕵️ `find_last_trnx.py`
+
+* `find_last_transaction_with_pan(transaction, collection)` :
+
+  * Récupère la **dernière transaction** connue avec le même PAN.
+  * Indispensable pour `impossible_travel`, permet la comparaison des coordonnées + timestamps.
+
+### 🪵 `logging.py`
+
+* `log_transaction(transaction: dict, features: dict, fraud_result: dict)` :
+
+  * Enregistre chaque transaction enrichie (features + résultat règles) dans la **collection Logs** avec un timestamp `logged_at`.
+  * Sert à la **traçabilité** des décisions et à l’évaluation future du système.
+
+
 
 ## Tests
 
@@ -318,9 +445,79 @@ Quelques exemples de features générées automatiquement :
   - `feature_extractor.py`
   - `data_access.py`
 
+pour lancer les tests il suffit d'execute pytest dans le terminal 
+
 ---
 
-## Auteure
+## 🧠 Module `rules/` – Moteur de Règles & Scoring de Fraude
 
-**Emna Walha**  
-Juin – Juillet 2025  
+Le dossier `rules/` contient la logique de **décision basée sur des règles déclaratives**. C’est ici que les features extraites sont confrontées à un ensemble de règles YAML pondérées.
+
+### 📋 Fonctionnement
+
+Le moteur de règles lit un fichier `rules.yaml`, itère sur chaque règle, et vérifie si une condition est remplie à partir des `features` extraites.
+
+```python
+engine = RuleEngine("rules/rules.yaml")
+result = engine.evaluate(features)
+```
+
+### 📂 Structure d’une règle (YAML)
+
+```yaml
+- id: R100
+  name: pan_velocity_15m
+  field: same_card_used_in_last_15m
+  condition: gt
+  threshold: 3
+  score: 50
+  reason: "La carte a été utilisée plus de 3 fois en 15 min."
+```
+
+### ⚙️ `RuleEngine` – Fichier `rule_engine.py`
+
+#### 🔧 Méthodes principales
+
+* `__init__(rules_path)` : charge le fichier YAML des règles.
+
+* `evaluate(features)` : applique chaque règle sur les données d’entrée, accumule le score, et retourne :
+
+  * `matched_rules` : règles déclenchées
+  * `reasons` : explication humaine
+  * `raw_score` : score total
+  * `fraud_risk` : niveau de risque (`low`, `medium`, `high`, `critical`)
+  * `recommanded_action` : action proposée (`allow`, `manual_review`, `block`, `block_and_alert`)
+
+* `rule_matched(rule, features)` : vérifie si une règle est satisfaite selon :
+
+  * `eq` : égalité stricte
+  * `gt` : strictement supérieur
+  * `gt_relative_avg` : comparaison avec une valeur moyenne (ex : montant > 3x moyenne)
+
+### 🧪 Exemples de Détection
+
+#### 💳 Comportements Carte & Paiement
+
+* `pan_velocity` : carte utilisée plusieurs fois en 15 ou 60 minutes
+* `big_amount_relative_to_avg` : montant > 3x moyenne utilisateur
+* `card_used_by_multiple_names` : carte utilisée avec différents noms récemment
+* `many_failed_attempts` : plusieurs échecs avec la même carte
+
+#### 🌐 Géolocalisation & IP
+
+* `impossible_travel` : 2 transactions trop distantes en temps/espace → vitesse > 1000 km/h
+* `country_mismatch` : pays IP ≠ pays de la banque
+* `frequent_timezone_switch` : trop de changements de fuseaux horaires
+* `same_ip_multiple_cards` : même IP utilisée pour plusieurs cartes
+* `is_proxy`, `is_hosting` : IP suspecte (proxy, hébergeur)
+
+#### ⏱️ Timing suspect
+
+* `late_night_weekend` : paiement effectué la nuit pendant le weekend
+
+#### 👤 Identité Utilisateur
+
+* `missing_name`, `missing_email` : absence d’informations clés
+* `name_used_with_multiple_cards` : un même nom utilisé avec plusieurs cartes
+
+
