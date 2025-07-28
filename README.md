@@ -553,5 +553,5 @@ Le moteur de règles de **KeyWatch** est conçu pour être **entièrement config
 
 Cette architecture permet une **évolution rapide** et une **maintenance facilitée**, idéale pour un projet en constante adaptation comme la détection de fraude.
 
----
+
 
