@@ -521,3 +521,37 @@ result = engine.evaluate(features)
 * `name_used_with_multiple_cards` : un même nom utilisé avec plusieurs cartes
 
 
+## 🔄 Configuration & Modularité des Règles
+
+Le moteur de règles de **KeyWatch** est conçu pour être **entièrement configurable** et **modulaire** afin de faciliter son adaptation à différents scénarios de détection de fraude.
+
+### 🗂️ Fichier `rules.yaml`
+
+- Toutes les règles sont déclarées dans un fichier YAML unique (`rules/rules.yaml`).
+- Chaque règle décrit :
+  - L’`id` unique de la règle.
+  - Le `field` (feature) à évaluer.
+  - La `condition` (ex: `eq`, `gt`, `gt_relative_avg`).
+  - Le `threshold` (seuil) à comparer.
+  - Le `score` associé à la règle.
+  - Le `reason` (explication humaine) pour le résultat.
+- Les **fenêtres temporelles** (ex : "15 minutes", "60 minutes") sont aussi paramétrables via les features calculées, ce qui rend la durée d’analyse flexible et ajustable.
+
+### 🧩 Architecture Modulaire
+
+- Les **features** sont extraites par des modules indépendants (dans le dossier `/extractors`).
+- Il est facile d’**ajouter de nouvelles features** sans modifier le moteur de règles.
+- Le moteur applique les règles sur les features reçues, ce qui garantit une séparation claire entre extraction de données et logique métier.
+
+### ⚙️ Extensibilité Facile
+
+- Pour **ajouter une nouvelle règle**, il suffit d’écrire une nouvelle entrée YAML dans `rules.yaml`.
+- Pour **intégrer une nouvelle feature**, il faut :
+  1. Ajouter une fonction d’extraction dans `/extractors`.
+  2. Mettre à jour la chaîne d’extraction pour inclure cette feature.
+  3. Ajouter une règle utilisant cette nouvelle feature dans `rules.yaml`.
+
+Cette architecture permet une **évolution rapide** et une **maintenance facilitée**, idéale pour un projet en constante adaptation comme la détection de fraude.
+
+---
+
