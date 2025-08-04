@@ -1,0 +1,325 @@
+Transaction 70 {
+  "_id": {
+    "$oid": "68459845b1e1a1a20bc6fd96"
+  },
+  "type": "ePayment",
+  "orderId": "8329",
+  "method": "bank_card",
+  "addPaymentFeesToAmount": true,
+  "payment": {
+    "$oid": "6845983ab1e1a1a20bc6fd2f"
+  },
+  "tags": [],
+  "paymentChannel": "Wordpress",
+  "receiverWallet": {
+    "$oid": "64190bfb700b1bf786ffddcf"
+  },
+  "underVerification": false,
+  "hidden": false,
+  "status": "success",
+  "processing": false,
+  "hashs": [],
+  "note": {
+    "attachments": []
+  },
+  "comments": [],
+  "token": "TND",
+  "amount": 37602,
+  "message": "- Apple carte cadeau 10 dollar x 1 = 37 TND",
+  "hideIdentity": false,
+  "hideContribution": false,
+  "origin": 1,
+  "requestOrigin": "https://barbarstore.tn/",
+  "disputeInitiated": false,
+  "refunded": false,
+  "internalNotes": [],
+  "notes": [],
+  "createdAt": {
+    "$date": "2025-06-08T14:03:49.384Z"
+  },
+  "updatedAt": {
+    "$date": "2025-06-08T14:04:40.732Z"
+  },
+  "__v": 0,
+  "ext_payment_ref": "aa5c7db2-b681-4d20-ba5a-66dafcd7ddcf",
+  "from": "smt",
+  "amountAfterFee": 37000,
+  "authRefNum": "001430496437",
+  "bankFee": 320,
+  "bankFeeRate": 0.85,
+  "binInformation": {
+    "$oid": "663ce014d65ce91d9e01faa0"
+  },
+  "details": "Request processed successfully",
+  "extSenderInfo": {
+    "pan": "516272**6298",
+    "approvalCode": "899496",
+    "expiration": "202910",
+    "paymentSystem": "MASTERCARD",
+    "name": "BOUABENE GHADA",
+    "regionType": "national",
+    "email": "",
+    "bankInfo": {
+      "bankName": "SOCIETE MONETIQUE-TUNISIE     ",
+      "bankCountryCode": "788",
+      "bankCountryName": "788"
+    }
+  },
+  "feeRate": 1.6,
+  "paidAt": {
+    "$date": "2025-06-08T14:04:39.718Z"
+  },
+  "senderIP": "197.240.177.44",
+  "senderIpInformation": {
+    "status": "success",
+    "country": "Tunisia",
+    "countryCode": "TN",
+    "region": "13",
+    "regionName": "Ben Arous Governorate",
+    "city": "Ben Arous",
+    "zip": "",
+    "lat": 36.7496,
+    "lon": 10.2126,
+    "timezone": "Africa/Tunis",
+    "currency": "TND",
+    "isp": "TOPNET",
+    "org": "",
+    "as": "AS37705 TOPNET",
+    "mobile": false,
+    "proxy": false,
+    "hosting": false,
+    "query": "197.240.177.44"
+  },
+  "senderIpLocation": {
+    "type": "Point",
+    "coordinates": [
+      9.8749,
+      37.2774
+    ],
+    "updatedAt": {
+      "$date": "2025-06-08T14:04:40.519Z"
+    }
+  },
+  "totalFee": 602
+}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.', 'The same name was used with multiple card numbers, which could mean identity theft or fraud pattern reuse.']
+Transaction 351{
+  "_id": {
+    "$oid": "68388a54d86073c2f1af4628"
+  },
+  "type": "ePayment",
+  "orderId": "8167",
+  "method": "bank_card",
+  "addPaymentFeesToAmount": true,
+  "payment": {
+    "$oid": "68388a45d86073c2f1af45a8"
+  },
+  "tags": [],
+  "paymentChannel": "Wordpress",
+  "receiverWallet": {
+    "$oid": "64190bfb700b1bf786ffddcf"
+  },
+  "underVerification": false,
+  "hidden": false,
+  "status": "success",
+  "processing": false,
+  "hashs": [],
+  "note": {
+    "attachments": []
+  },
+  "comments": [],
+  "token": "TND",
+  "amount": 269309,
+  "message": "- 4 ecran 5 profiles Netflix 6 mois compte complet priv\u00c3\u00a9 en tunisie x 1 = 265 TND",    
+  "hideIdentity": false,
+  "hideContribution": false,
+  "origin": 1,
+  "requestOrigin": "https://barbarstore.tn/",
+  "disputeInitiated": false,
+  "refunded": false,
+  "internalNotes": [],
+  "notes": [],
+  "createdAt": {
+    "$date": "2025-05-29T16:24:52.538Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-29T16:25:53.147Z"
+  },
+  "__v": 0,
+  "ext_payment_ref": "c4e98e8f-58e5-43dd-9b36-16d6142e470b",
+  "from": "smt",
+  "amountAfterFee": 265000,
+  "authRefNum": "001424051853",
+  "bankFee": 1885,
+  "bankFeeRate": 0.7,
+  "binInformation": {
+    "$oid": "663ce014d65ce91d9e01fa00"
+  },
+  "details": "Request processed successfully",
+  "extSenderInfo": {
+    "pan": "450707**8401",
+    "approvalCode": "205992",
+    "expiration": "202807",
+    "paymentSystem": "VISA",
+    "name": "KHALED BEN SALEM",
+    "regionType": "national",
+    "email": "",
+    "bankInfo": {
+      "bankCountryCode": "788",
+      "bankCountryName": "788"
+    }
+  },
+  "feeRate": 1.6,
+  "paidAt": {
+    "$date": "2025-05-29T16:25:51.194Z"
+  },
+  "senderIP": "138.199.16.80",
+  "senderIpInformation": {
+    "status": "success",
+    "country": "France",
+    "countryCode": "FR",
+    "region": "PAC",
+    "regionName": "Provence-Alpes-C\u00c3\u00b4te d'Azur",
+    "city": "Marseille",
+    "zip": "13001",
+    "lat": 43.2951,
+    "lon": 5.3861,
+    "timezone": "Europe/Paris",
+    "currency": "EUR",
+    "isp": "Datacamp Limited",
+    "org": "Cdnext MRS",
+    "as": "AS212238 Datacamp Limited",
+    "mobile": false,
+    "proxy": true,
+    "hosting": false,
+    "query": "138.199.16.80"
+  },
+  "senderIpLocation": {
+    "type": "Point",
+    "coordinates": [
+      5.3861,
+      43.2951
+    ],
+    "updatedAt": {
+      "$date": "2025-05-29T16:25:52.974Z"
+    }
+  },
+  "totalFee": 4309
+}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 430{
+  "_id": {
+    "$oid": "68344dc207b89af30b5f74eb"
+  },
+  "type": "ePayment",
+  "method": "bank_card",
+  "addPaymentFeesToAmount": true,
+  "payment": {
+    "$oid": "68344d9e07b89af30b5f67b6"
+  },
+  "tags": [],
+  "paymentChannel": "PaymentLink",
+  "receiverWallet": {
+    "$oid": "64190bfb700b1bf786ffddcf"
+  },
+  "underVerification": false,
+  "hidden": false,
+  "status": "success",
+  "processing": false,
+  "hashs": [],
+  "note": {
+    "attachments": []
+  },
+  "comments": [],
+  "token": "TND",
+  "amount": 45732,
+  "hideIdentity": false,
+  "hideContribution": false,
+  "origin": 1,
+  "requestOrigin": "http://m.facebook.com/",
+  "disputeInitiated": false,
+  "refunded": false,
+  "internalNotes": [],
+  "notes": [],
+  "createdAt": {
+    "$date": "2025-05-26T11:17:22.718Z"
+  },
+  "updatedAt": {
+    "$date": "2025-05-26T11:18:52.253Z"
+  },
+  "__v": 0,
+  "ext_payment_ref": "a7a49704-8b9f-425f-b811-7880e22ed8d3",
+  "from": "smt",
+  "amountAfterFee": 45000,
+  "authRefNum": "001421682346",
+  "bankFee": 320,
+  "bankFeeRate": 0.7,
+  "binInformation": {
+    "$oid": "663ce014d65ce91d9e01fa54"
+  },
+  "details": "Request processed successfully",
+  "extSenderInfo": {
+    "pan": "545574**8547",
+    "approvalCode": "792193",
+    "expiration": "202807",
+    "paymentSystem": "MASTERCARD",
+    "name": "MEKKI BEN KHALIFA",
+    "regionType": "national",
+    "email": "",
+    "bankInfo": {
+      "bankName": "SOCIETE MONETIQUE-TUNISIE     ",
+      "bankCountryCode": "788",
+      "bankCountryName": "788"
+    }
+  },
+  "feeRate": 1.6,
+  "paidAt": {
+    "$date": "2025-05-26T11:18:49.337Z"
+  },
+  "senderIP": "85.190.233.132",
+  "senderIpInformation": {
+    "status": "success",
+    "country": "Italy",
+    "countryCode": "IT",
+    "region": "62",
+    "regionName": "Lazio",
+    "city": "Rome",
+    "zip": "00118",
+    "lat": 41.8905,
+    "lon": 12.5127,
+    "timezone": "Europe/Rome",
+    "currency": "EUR",
+    "isp": "PacketHub S.A.",
+    "org": "Packethub S.A",
+    "as": "AS207137 PacketHub S.A.",
+    "mobile": false,
+    "proxy": true,
+    "hosting": false,
+    "query": "85.190.233.132"
+  },
+  "senderIpLocation": {
+    "type": "Point",
+    "coordinates": [
+      12.5126,
+      41.8904
+    ],
+    "updatedAt": {
+      "$date": "2025-05-26T11:18:52.000Z"
+    "type": "Point",
+    "coordinates": [
+      12.5126,
+      41.8904
+    ],
+    "updatedAt": {
+      "$date": "2025-05-26T11:18:52.000Z"
+    }
+  },
+  "totalFee": 732
+}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 3 {'_id': '688c6ab5fe2687297ac2cefd', 'type': 'ePayment', 'orderId': '8691', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '688c6ab1fe2687297ac2ce95', 'tags': [], 'paymentChannel': 'Wordpress', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'processing': False, 'hashs': [], 'regionType': 'national', 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 37601, 'message': '- Apple carte cadeau 10 dollar x 1 = 37 TND', 'totalFee': 592, 'bankFee': 315, 'bankFeeRate': 0.85, 'hideIdentity': False, 'hideContribution': False, 'amountAfterFee': 37000, 'origin': 1, 'requestOrigin': 'https://barbarstore.tn/', 'feeRate': 1.6, 'purchaseProtection': False, 'isPurchaseProtected': False, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-08-01T07:20:21.170Z'}, 'updatedAt': {'$date': '2025-08-01T07:20:53.055Z'}, '__v': 0, 'ext_payment_ref': '70a1bba3-7444-49a2-bae2-6c1715b53d59', 'from': 'smt', 'affiliation': {'type': 'konnect-affiliation'}, 'authRefNum': '001469397367', 'binInformation': '663ce014d65ce91d9e01faa0', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '516272**6298', 'approvalCode': '136505', 'expiration': '202910', 'paymentSystem': 'MASTERCARD', 'name': 'BOUABENE GHADA', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'paidAt': {'$date': '2025-08-01T07:20:50.627Z'}, 'senderIP': '197.238.54.55', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': 'TOPNET', 'org': '', 'as': 'AS37705 TOPNET', 'mobile': False, 'proxy': False, 'hosting': False, 'query': '197.238.54.55'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.7411, 36.4508], 'updatedAt': {'$date': '2025-08-01T07:20:52.810Z'}}}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.', 'The same name was used with multiple card numbers, which could mean identity theft or fraud pattern reuse.']
+Transaction 18 {'_id': '688babebfe2687297ab6db54', 'type': 'ePayment', 'orderId': '8682', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '688babdbfe2687297ab6da7d', 'tags': [], 'paymentChannel': 'Wordpress', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'processing': False, 'hashs': [], 'regionType': 'national', 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 15243, 'message': '- 1 Profil Netflix 1 mois en Tunisie x 1 = 15 TND', 'totalFee': 240, 'bankFee': 128, 'bankFeeRate': 0.85, 'hideIdentity': False, 'hideContribution': False, 'amountAfterFee': 15000, 'origin': 1, 'requestOrigin': 'https://gateway.konnect.network/pay?payment_ref=688babdbfe2687297ab6da7d', 'feeRate': 1.6, 'purchaseProtection': False, 'isPurchaseProtected': False, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-07-31T17:46:19.434Z'}, 'updatedAt': {'$date': '2025-07-31T17:47:40.118Z'}, '__v': 0, 'ext_payment_ref': '8d663eff-7353-4a6d-b91e-9e728d4a0120', 'from': 'smt', 'affiliation': {'type': 'konnect-affiliation'}, 'authRefNum': '001469091434', 'binInformation': '663ce014d65ce91d9e01fa3f', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '535940**4791', 'approvalCode': '631479', 'expiration': '202808', 'paymentSystem': 'MASTERCARD', 'name': 'HAYKEL HENCHIRI', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'paidAt': {'$date': '2025-07-31T17:47:36.932Z'}, 'senderIP': '104.28.96.176', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': 'Cloudflare, Inc.', 'org': 'Cloudflare WARP', 'as': 'AS13335 Cloudflare, Inc.', 'mobile': False, 'proxy': True, 'hosting': False, 'query': '104.28.96.176'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.1701, 36.8232], 'updatedAt': {'$date': '2025-07-31T17:47:39.867Z'}}}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 182 {'_id': '687c0410193994e722c0b839', 'type': 'ePayment', 'orderId': '8599', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '687c040a193994e722c0b806', 'tags': [], 'paymentChannel': 'Wordpress', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'processing': False, 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 15244, 'message': '- 1 Profil Netflix 1 mois en Tunisie x 1 = 15 TND', 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'requestOrigin': 'https://barbarstore.tn/', 'purchaseProtection': False, 'isPurchaseProtected': False, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-07-19T20:46:08.076Z'}, 'updatedAt': {'$date': '2025-07-19T20:47:29.610Z'}, '__v': 0, 'ext_payment_ref': '8132abe5-f0af-4a2b-8dc3-8fe2c2664e51', 'from': 'smt', 'affiliation': {'type': 'konnect-affiliation'}, 'amountAfterFee': 15000, 'authRefNum': '001460065346', 'bankFee': 130, 'bankFeeRate': 0.85, 'binInformation': '663ce014d65ce91d9e01fa3f', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '535940**4791', 'approvalCode': '652183', 'expiration': '202808', 'paymentSystem': 'MASTERCARD', 'name': 'HENCHIRI', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'feeRate': 1.6, 'paidAt': {'$date': '2025-07-19T20:47:27.450Z'}, 'senderIP': '104.28.98.112', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': 'Cloudflare, Inc.', 'org': 'Cloudflare WARP', 'as': 'AS13335 Cloudflare, Inc.', 'mobile': False, 'proxy': True, 'hosting': False, 'query': '104.28.98.112'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.1701, 36.8232], 'updatedAt': {'$date': '2025-07-19T20:47:29.362Z'}}, 'totalFee': 244}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 284 {'_id': '681a5dbabf6eec5c038523dc', 'type': 'ePayment', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '681a5d9fbf6eec5c03852190', 'tags': [], 'paymentChannel': 'PaymentLink', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'processing': False, 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 86382, 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-05-06T19:06:34.315Z'}, 'updatedAt': {'$date': '2025-05-06T19:08:46.239Z'}, '__v': 0, 'ext_payment_ref': 'da12ec82-c5fd-4c5a-ab99-5017e07d94fa', 'from': 'smt', 'amountAfterFee': 85000, 'authRefNum': '001409075677', 'bankFee': 605, 'bankFeeRate': 0.7, 'binInformation': '663ce014d65ce91d9e01fa4f', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '542026**3863', 'approvalCode': '918342', 'expiration': '202604', 'paymentSystem': 'MASTERCARD', 'name': 'NABIL', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'feeRate': 1.6, 'paidAt': {'$date': '2025-05-06T19:08:43.526Z'}, 'senderIP': '104.28.96.177', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': 'Cloudflare, Inc.', 'org': 'Cloudflare WARP', 'as': 'AS13335 Cloudflare, Inc.', 'mobile': False, 'proxy': True, 'hosting': False, 'query': '104.28.96.177'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.1701, 36.8232], 'updatedAt': {'$date': '2025-05-06T19:08:45.978Z'}}, 'totalFee': 1382}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 285 {'_id': '681a52b1bf6eec5c0383b440', 'type': 'ePayment', 'orderId': '7955', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '681a52b1bf6eec5c0383b435', 'tags': [], 'paymentChannel': 'Wordpress', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'processing': False, 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 50813, 'message': '- Disney plus 6 mois 1 profil x 1 = 50 TND', 'hideIdentity': False, 'hideContribution': False, 'trackingInfo': {'clientIP': '89.117.169.89'}, 'origin': 1, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-05-06T18:19:29.820Z'}, 'updatedAt': {'$date': '2025-05-06T18:21:00.846Z'}, '__v': 0, 'ext_payment_ref': '2eff4e12-e110-483c-a8e1-84d7c1726643', 'from': 'smt', 'amountAfterFee': 50000, 'authRefNum': '001409045846', 'bankFee': 356, 'bankFeeRate': 0.7, 'binInformation': '663ce014d65ce91d9e01fae0', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '539995**7186', 'approvalCode': '538787', 'expiration': '202612', 'paymentSystem': 'MASTERCARD', 'name': 'OMAR', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'feeRate': 1.6, 'paidAt': {'$date': '2025-05-06T18:20:58.147Z'}, 'senderIP': '37.120.232.92', 'senderIpInformation': {'status': 'success', 'country': 'Denmark', 'countryCode': 'DK', 'region': '84', 'regionName': 'Capital Region', 'city': 'Ballerup Municipality', 'zip': '2750', 'lat': 55.7339, 'lon': 12.362, 'timezone': 'Europe/Copenhagen', 'currency': 'DKK', 'isp': 'M247 Europe SRL', 'org': 'M247 LTD', 'as': 'AS9009 M247 Europe SRL', 'mobile': False, 'proxy': True, 'hosting': True, 'query': '37.120.232.92'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [12.3656, 55.7327], 'updatedAt': {'$date': '2025-05-06T18:21:00.592Z'}}, 'totalFee': 813}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'The IP address used belongs to a hosting provider, often associated with bot or automated activity.', 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 313 {'_id': '68182dd8ffbfb58e43a0e99b', 'type': 'ePayment', 'orderId': 'edin', 'method': 'bank_card', 'addPaymentFeesToAmount': False, 'payment': '68182dc7ffbfb58e43a0e7ef', 'tags': [], 'paymentChannel': 'PaymentLink', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'failed_payment', 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 1400000, 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-05-05T03:17:44.666Z'}, 'updatedAt': {'$date': '2025-05-05T03:20:10.924Z'}, '__v': 0, 'ext_payment_ref': 'e858027f-c637-4ef1-bc4b-6a0b748043fd', 'from': 'smt', 'details': 'Rejected Authorization [Do not honor transaction]', 'extSenderInfo': {'pan': '535940**8526', 'expiration': '202505', 'paymentSystem': 'MASTERCARD', 'name': 'AYMEN BEN AMMAR', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}, 'regionType': 'national'}, 'paidAt': {'$date': '2025-05-05T03:20:10.197Z'}, 'senderIP': '41.227.50.132'}: fraud_risk=medium, reason=['This transaction amount is unusually large and may require additional review.', 'This transaction was made late at night during the weekend, which can be a risky time for fraud.', 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 474 {'_id': '680e92a82fc1916816fb4861', 'type': 'ePayment', 'method': 'bank_card', 'addPaymentFeesToAmount': False, 'payment': '680e92962fc1916816fb3ff8', 'tags': [], 'paymentChannel': 'PaymentLink', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 1200000, 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-04-27T20:25:12.382Z'}, 'updatedAt': {'$date': '2025-04-27T20:27:20.787Z'}, '__v': 0, 'ext_payment_ref': '8b656430-0e53-43ea-8799-107f2ff9b7bd', 'from': 'smt', 'amountAfterFee': 1180800, 'authRefNum': '001403028445', 'bankFee': 8400, 'bankFeeRate': 0.7, 'binInformation': '663ce014d65ce91d9e01fa3f', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '535940**8526', 'approvalCode': '323171', 'expiration': '202504', 'paymentSystem': 'MASTERCARD', 'name': 'AYMEN BEN AMMAR', 'regionType': 'national', 'email': '', 'bankInfo': {'bankName': 'SOCIETE MONETIQUE-TUNISIE     ', 'bankCountryCode': '788', 'bankCountryName': '788'}}, 'feeRate': 1.6, 'paidAt': {'$date': '2025-04-27T20:27:19.591Z'}, 'senderIP': '197.15.47.207', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': '3S INF', 'org': 'Globalnet', 'as': 'AS37671 3S INF', 'mobile': False, 'proxy': False, 'hosting': False, 'query': '197.15.47.207'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.1906, 36.8562], 'updatedAt': {'$date': '2025-04-27T20:27:20.536Z'}}, 'totalFee': 19200}: fraud_risk=medium, reason=['This transaction amount is unusually large and may require additional review.', "The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
+Transaction 38 {'_id': '680ab2c32fc1916816b90c6f', 'type': 'ePayment', 'orderId': '7822', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '680ab2ac2fc1916816b90ae3', 'tags': [], 'paymentChannel': 'Wordpress', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'failed_payment', 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 1783537, 'message': '- 1 Profil Netflix 1 mois en Tunisie x 117 = 1755 TND', 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'requestOrigin': 'https://barbarstore.tn/', 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-04-24T21:53:07.383Z'}, 'updatedAt': {'$date': '2025-04-24T22:20:00.654Z'}, '__v': 0, 'ext_payment_ref': '46bdc392-541d-4c7e-a3b1-ff458a2e7273', 'from': 'smt', 'details': 'Order expired after session time limit/Customer did not complete the authentication in timely manner', 'extSenderInfo': {'email': '', 'bankInfo': {'bankCountryCode': 'UNKNOWN', 'bankCountryName': '<Unknown>'}, 'regionType': 'international'}, 'paidAt': {'$date': '2025-04-24T22:09:01.800Z'}}: fraud_risk=medium, reason=['This transaction amount is unusually large and may require additional review.', 'No email address was provided in this transaction, which may reduce traceability and increase risk.', 'No user name was provided in this transaction, which could indicate a bot or low-effort fraud attempt.']
+Transaction 330 {'_id': '67fd30a2ababd2cf9ff945c7', 'type': 'ePayment', 'method': 'bank_card', 'addPaymentFeesToAmount': True, 'payment': '67fd3082ababd2cf9ff9401b', 'tags': [], 'paymentChannel': 'PaymentLink', 'receiverWallet': '64190bfb700b1bf786ffddcf', 'underVerification': False, 'hidden': False, 'status': 'success', 'hashs': [], 'note': {'attachments': []}, 'comments': [], 'token': 'TND', 'amount': 113821, 'hideIdentity': False, 'hideContribution': False, 'origin': 1, 'disputeInitiated': False, 'refunded': False, 'internalNotes': [], 'notes': [], 'createdAt': {'$date': '2025-04-14T15:58:26.320Z'}, 'updatedAt': {'$date': '2025-04-14T16:00:43.360Z'}, '__v': 0, 'ext_payment_ref': 'acb54977-eb23-41d3-838d-d8a8e13c299f', 'from': 'smt', 'amountAfterFee': 112000, 'authRefNum': '001394320391', 'bankFee': 797, 'bankFeeRate': 0.7, 'binInformation': '663ce014d65ce91d9e01f9bf', 'details': 'Request processed successfully', 'extSenderInfo': {'pan': '414855**1687', 'approvalCode': '114250', 'expiration': '202711', 'paymentSystem': 'VISA', 'name': 'MOURAD SAMAALI', 'regionType': 'national', 'email': '', 'bankInfo': {'bankCountryName': '<Unknown>'}}, 'feeRate': 1.6, 'paidAt': {'$date': '2025-04-14T16:00:35.126Z'}, 'senderIP': '104.28.96.177', 'senderIpInformation': {'status': 'success', 'country': 'Tunisia', 'countryCode': 'TN', 'region': '11', 'regionName': 'Tunis Governorate', 'city': 'Tunis', 'zip': '', 'lat': 36.8178, 'lon': 10.1656, 'timezone': 'Africa/Tunis', 'currency': 'TND', 'isp': 'Cloudflare, Inc.', 'org': 'Cloudflare WARP', 'as': 'AS13335 Cloudflare, Inc.', 'mobile': False, 'proxy': True, 'hosting': False, 'query': '104.28.96.177'}, 'senderIpLocation': {'type': 'Point', 'coordinates': [10.1701, 36.8232], 'updatedAt': {'$date': '2025-04-14T16:00:43.203Z'}}, 'totalFee': 1821}: fraud_risk=medium, reason=["The IP address location and the card issuer's country do not match, which may indicate a spoofed or foreign origin.", "The transaction came from an IP identified as a proxy or anonymizer, which can hide the user's real location.", 'No email address was provided in this transaction, which may reduce traceability and increase risk.']
