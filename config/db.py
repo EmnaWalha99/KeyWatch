@@ -1,31 +1,52 @@
-from pymongo import MongoClient
-from config.settings import MONGO_URI, DB_NAME, COLLECTION_NAME  , LOGS_COLLECTION
+#from pymongo import MongoClient
+#from config.settings import MONGO_URI, DB_NAME, COLLECTION_NAME  , LOGS_COLLECTION
 
-def get_mongo_client():
-    
+from motor.motor_asyncio import AsyncIOMotorClient
+
+MONGO_URI= "mongodb://localhost:27017"
+MONGO_DB_NAME= "fraud-detection"
+
+client = AsyncIOMotorClient(MONGO_URI)
+db= client[MONGO_DB_NAME]
+
+def get_transactions_collection():
     try:
-        client = MongoClient(MONGO_URI)
-        print("[INFO] Successfully connected to MongoDB")
-        return client
+        return db["transactions"]
     except Exception as e:
-        print(f"[ERROR] Failed to connect to MongoDB: {e}")
+        print(f"[ERROR] Failed to get transactions collection: {e}")
         return None
+
+def get_logs_collection():
+    try:
+        return db["logs"]
+    except Exception as e:
+        return db["logs"]
+
+
+"""
+_client = None
+def get_mongo_client():
+    global _client
+    if _client is None:
+        try:
+            _client = MongoClient(MONGO_URI)
+            print("[INFO] Successfully connected to MongoDB")
+        except Exception as e:
+            print(f"[ERROR] Failed to connect to MongoDB: {e}")
+    return _client
 
 def get_transactions_collection():
     try :
-        collection= get_mongo_client()[DB_NAME][COLLECTION_NAME]
-        print(f"[INFO] Successfully accessed collection '{COLLECTION_NAME}' in database '{DB_NAME}'")
-        return collection
+        return get_mongo_client()[DB_NAME][COLLECTION_NAME]
     except Exception as e:
         print(f"[ERROR] Failed to get transactions collection: {e}")
         return None
         
 def get_logs_collection():
     try : 
-        collection = get_mongo_client()[DB_NAME][LOGS_COLLECTION]
-        print(f"[INFO] Successfully accessed logs collection in '{DB_NAME}'")
-        return collection
+        return get_mongo_client()[DB_NAME][LOGS_COLLECTION]
     except Exception as e : 
         print(f"[ERROR] Failed to get logs collection: {e}")
         return None
     
+"""

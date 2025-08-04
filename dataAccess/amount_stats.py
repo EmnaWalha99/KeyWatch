@@ -1,9 +1,9 @@
 from datetime import datetime , timedelta , timezone 
 from config.db import get_transactions_collection
 
-def get_avg_amount_last_7d(pan, collection=None):
+async def get_avg_amount_last_7d(pan: str, collection=None)-> float:
     if not pan:
-        return 0
+        return 0.0
 
     if collection is None:
         collection = get_transactions_collection()
@@ -18,14 +18,19 @@ def get_avg_amount_last_7d(pan, collection=None):
         },
         {"amount": 1}
     )
+        
+    amounts= []
 
-    amounts = []
-    for doc in cursor:
-        amount = doc.get("amount")
-        if isinstance(amount, (int, float)):
-            amounts.append(amount)
+    async for doc in cursor:
+        amount = doc.get("amount", 0)
+        amounts.append(amount)
+    
+    """.explain()
+    print("[DEBUG] Explain output:", cursor)
+    just to test if the index is used correctly 
+    """
 
     if not amounts:
-        return 0
+        return 0.0
 
     return round(sum(amounts) / len(amounts), 2)

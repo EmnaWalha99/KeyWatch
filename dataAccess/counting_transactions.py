@@ -12,26 +12,7 @@ def load_config(path="config/velocity_config.yaml"):
 config= load_config()
 
 
-
-#transactions_collection=get_transactions_collection()
-
-"""velocity_check = { 
-    "pan" : [15 , 60],
-    "senderIP" : [60] , 
-    "email" : [300] , 
-    "name" : [300]
-}
-distinct_check = {
-    "pan": ["extSenderInfo.name", "senderIP"],
-    "senderIP": ["extSenderInfo.pan"],
-    "extSenderInfo.name": ["extSenderInfo.pan"]
-}
-default_window_minutes = {
-    "pan": 15,
-    "senderIP": 60,
-    "extSenderInfo.name": 300
-}"""
-def get_velocity_counts(transaction, now=None, collection=None):
+async def get_velocity_counts(transaction, now=None, collection=None):
     if now is None:
         now = datetime.now(timezone.utc)
     if collection is None:
@@ -60,12 +41,7 @@ def get_velocity_counts(transaction, now=None, collection=None):
         for window_minutes in windows:
             since = now - timedelta(minutes=window_minutes)
             query_field=config["field_mapping"][key]
-            """query_field = {
-                "pan": "extSenderInfo.pan",
-                "senderIP": "senderIP",
-                "email": "extSenderInfo.email",
-                "name": "extSenderInfo.name"
-            }[key]"""
+        
             
 
             query = {
@@ -73,14 +49,9 @@ def get_velocity_counts(transaction, now=None, collection=None):
                 "createdAt": {"$gte": since}
             }
 
-            count = collection.count_documents(query)
+            count = await collection.count_documents(query)
 
-            """label_map = {
-                "pan": "same_card_used",
-                "senderIP": "same_ip_used",
-                "email": "same_email_used",
-                "name": "same_name_used"
-            }"""
+            
             label_map=config["label_map"]
             key_label = f"{label_map[key]}_in_last_{window_minutes}m"
             flat_results[key_label] = count
@@ -89,7 +60,7 @@ def get_velocity_counts(transaction, now=None, collection=None):
 
 
     
-def get_distinct_counts(transaction, now=None, collection=None):
+async def get_distinct_counts(transaction, now=None, collection=None):
     if now is None:
         now = datetime.now(timezone.utc)
     if collection is None:
@@ -111,7 +82,7 @@ def get_distinct_counts(transaction, now=None, collection=None):
                 "createdAt": {"$gte": since}
             }
 
-            distinct_values = collection.distinct(distinct_field, query)
+            distinct_values = await collection.distinct(distinct_field, query)
             count = len(distinct_values)
 
             readable_key = f"{main_field}__{distinct_field}"
