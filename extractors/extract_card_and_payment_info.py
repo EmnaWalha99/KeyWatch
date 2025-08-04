@@ -21,14 +21,14 @@ def extract_amount(data):
             'amount'  : amount , 
         }
 
-def extract_avg_amount_last_7d(data, collection=None):
+async def extract_avg_amount_last_7d(data, collection=None):
     try:
         if collection is None : 
             collection = get_transactions_collection()
         pan=data.get("extSenderInfo",{}).get("pan")
         if not pan : 
             return {"avg_amount_last_7d": None}
-        avg_amount = get_avg_amount_last_7d(pan, collection=collection)
+        avg_amount = await get_avg_amount_last_7d(pan, collection=collection)
         return {"avg_amount_last_7d":avg_amount}
     except Exception as e : 
         print("[ERROR] Avg amount extraction failed:", e)

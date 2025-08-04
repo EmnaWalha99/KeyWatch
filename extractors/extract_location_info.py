@@ -49,16 +49,17 @@ def extract_ip_info(data):
                 
             }
             
-def haversine(coord1 , coord2): # calculating distance between two coordinates 
-    lon1 , lat1 = coord1
-    lon2 , lat2 = coord2
-    R = 6371 # le rayonn de la terre en KM
+def haversine(coord1, coord2):
+    lat1, lon1 = coord1
+    lat2, lon2 = coord2
+    R = 6371  # rayon Terre en km
     phi1 = math.radians(lat1)
     phi2 = math.radians(lat2)
-    dphi = math.radians(lat2-lat1)
-    dlambda = math.radians(lon2 -lon1)
-    a = math.sin(dphi/2)**2 + math.cos(phi1)*math.cos(phi2)*math.sin(dlambda/2)**2
+    dphi = math.radians(lat2 - lat1)
+    dlambda = math.radians(lon2 - lon1)
+    a = math.sin(dphi / 2) ** 2 + math.cos(phi1) * math.cos(phi2) * math.sin(dlambda / 2) ** 2
     return 2 * R * math.asin(math.sqrt(a))
+
 
 
 def extract_country_mismatch(data):
@@ -76,70 +77,59 @@ def extract_country_mismatch(data):
             "ip_country_and_bank_country_mismatch" : "unknown"
         }
        
-def extract_impossible_travel(data, collection=None):
-    from dateutil.parser import parse 
+async def extract_impossible_travel(data, collection=None):
+    from dateutil.parser import parse
+    from config.db import get_transactions_collection
+
     try:
-        if collection is None : 
+        if collection is None:
             collection = get_transactions_collection()
         current_location = data.get("senderIpLocation", {}).get("coordinates")
         current_time = data.get("createdAt")
-        #collection = get_transactions_collection()
-        last_trx = find_last_transaction_with_pan(data,collection)
+
+        last_trx = await find_last_transaction_with_pan(data, collection)
         if not last_trx:
-            return {"impossible_travel": 0,
-                    "time_difference_with_last_trnx_h": None,
-                    "travel_distance_km": None,
-                    "travel_speed_kmh": None
-                    }
+            return {
+                "impossible_travel": 0,
+                "time_difference_with_last_trnx_h": None,
+                "travel_distance_km": None,
+                "travel_speed_kmh": None
+            }
 
         last_location = last_trx.get("senderIpLocation", {}).get("coordinates")
         last_time = last_trx.get("createdAt")
 
-        
-        #parsing datetimes 
+        # Validate coordinates are valid tuples or lists with floats
+        if (not isinstance(current_location, (list, tuple)) or
+            not isinstance(last_location, (list, tuple))):
+            return {"impossible_travel": 0}
+
+        # Parse and normalize times
         if isinstance(current_time, dict) and "$date" in current_time:
             current_time = current_time["$date"]
         if isinstance(last_time, dict) and "$date" in last_time:
             last_time = last_time["$date"]
 
-        #from dateutil.parser import parse
-        if isinstance(current_time, str):
-            current_time = parse(current_time)
-        if isinstance(last_time, str):
-            last_time = parse(last_time)  
-        
-        # timezone 
-        if current_time.tzinfo is None : 
+        current_time = parse(current_time) if isinstance(current_time, str) else current_time
+        last_time = parse(last_time) if isinstance(last_time, str) else last_time
+
+        if current_time.tzinfo is None:
             current_time = current_time.replace(tzinfo=timezone.utc)
-        if last_time.tzinfo is None : 
+        if last_time.tzinfo is None:
             last_time = last_time.replace(tzinfo=timezone.utc)
-        
-        if not (last_location and last_time and current_location and current_time):
-            print("DEBUG impossible_travel:")
-            print("  current_location:", current_location)
-            print("  current_time:", current_time)
-            print("  last_location:", last_location)
-            print("  last_time:", last_time)
-            return {"impossible_travel": 0,"problem here" :1}
 
         distance = haversine(current_location, last_location)
-        """
-        if hasattr(current_time, "timestamp") and hasattr(last_time, "timestamp"):
-            time_difference_hours = (current_time - last_time).total_seconds() / 3600.0
-        else:
-            return {"impossible_travel": 0}
-        """
-        time_difference_hours = (current_time - last_time).total_seconds() / 3600.0
+        time_diff_h = (current_time - last_time).total_seconds() / 3600.0
 
-        if time_difference_hours == 0:
+        if time_diff_h == 0:
             return {"impossible_travel": 0}
 
-        speed = distance / time_difference_hours
-        impossible = int(speed > 1000)  # Threshold: 1000 km/h
+        speed = distance / time_diff_h
+        impossible = int(speed > 1000)  # seuil 1000 km/h
 
         return {
             "impossible_travel": impossible,
-            "time_difference_with_last_trnx_h": time_difference_hours,
+            "time_difference_with_last_trnx_h": time_diff_h,
             "travel_distance_km": distance,
             "travel_speed_kmh": speed
         }
@@ -148,10 +138,11 @@ def extract_impossible_travel(data, collection=None):
         return {
             "impossible_travel": "unknown"
         }
+
         
     
     
-def extract_frequent_timezone_switch(data , collection=None , n=10 , threshold=3) : 
+async def extract_frequent_timezone_switch(data , collection=None , n=10 , threshold=3) : 
     if collection is None :
         from config.db import get_transactions_collection
         collection = get_transactions_collection()
@@ -164,7 +155,7 @@ def extract_frequent_timezone_switch(data , collection=None , n=10 , threshold=3
         limit=n
     )
     timezones = set()
-    for trnx in cursor:
+    async for trnx in cursor:
         tz = trnx .get("senderIpInformation", {}).get("timezone")
         if tz:
             timezones.add(tz)

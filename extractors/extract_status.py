@@ -16,9 +16,9 @@ def extract_status(data):
                 "status": "unknown"
             }
             
-def extract_many_failed_attempts(data):
+async def extract_many_failed_attempts(data):
     try:
-        number = count_failed_attempts(data)
+        number =  await count_failed_attempts(data)
         #print("number of failed attemps : ", number)
         if number is not None and number > 3 : 
             return {

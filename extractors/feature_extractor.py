@@ -15,15 +15,16 @@ from extractors.extract_card_and_payment_info import (
     extract_fee_rate,
     extract_avg_amount_last_7d
 )
-from extractors.extract_status import extract_status , extract_many_failed_attempts
+from extractors.extract_status import extract_status, extract_many_failed_attempts
 from extractors.extract_merchant_domain import extract_merchant_domain
 
 
 class FeatureExtractor:
     def __init__(self, collection=None):
-        self.collection = collection if collection is not None else get_transactions_collection()
+        self.collection = collection or get_transactions_collection()
 
-        self.extractors = [
+        # extracteurs synchrones
+        self.sync_extractors = [
             extract_sender_info,
             extract_ip_info,
             extract_amount,
@@ -31,34 +32,40 @@ class FeatureExtractor:
             extract_late_hour,
             extract_day,
             extract_status,
-            extract_many_failed_attempts,
             extract_country_mismatch,
-            #extract_impossible_travel,
             extract_fee_rate,
             extract_pan_info,
         ]
 
-    def extract_features(self, trnx_data: dict) -> dict:
+        #extracteurs asynchrones
+        self.async_extractors = [
+            extract_many_failed_attempts,
+        ]
+
+    async def extract_features(self, trnx_data: dict) -> dict:
         features = {}
 
-        # simple extractors
-        for extractor in self.extractors:
+        # Appeler extracteurs synchrones
+        for extractor in self.sync_extractors:
             try:
-                features.update(extractor(trnx_data))
+                result = extractor(trnx_data)
+                features.update(result)
             except Exception as e:
                 print(f"[ERROR] {extractor.__name__} failed: {e}")
 
-        # extractors that need collection or special args
+        for extractor in self.async_extractors:
+            try:
+                result = await extractor(trnx_data)
+                features.update(result)
+            except Exception as e:
+                print(f"[ERROR] {extractor.__name__} failed: {e}")
+
         try:
-            features.update(extract_impossible_travel(trnx_data , collection = self.collection))
-            features.update(extract_avg_amount_last_7d(trnx_data,collection = self.collection))
-            features.update(
-                extract_frequent_timezone_switch(
-                    trnx_data, collection=self.collection, n=3, threshold=2
-                )
-            )
-            features.update(get_velocity_counts(trnx_data, collection=self.collection))
-            features.update(get_distinct_counts(trnx_data))
+            features.update(await extract_impossible_travel(trnx_data, collection=self.collection))
+            features.update(await extract_avg_amount_last_7d(trnx_data, collection=self.collection))
+            features.update(await extract_frequent_timezone_switch(trnx_data, collection=self.collection, n=3, threshold=2))
+            features.update(await get_velocity_counts(trnx_data, collection=self.collection))
+            features.update(await get_distinct_counts(trnx_data, collection=self.collection))
         except Exception as e:
             print(f"[ERROR] Special extractor failed: {e}")
 
