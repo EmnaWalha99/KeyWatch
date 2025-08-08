@@ -27,9 +27,7 @@ async def apply_rules(transaction_data: dict):
         features = await extractor.extract_features(transaction_data)
         result = rules_engine.evaluate(features)
 
-        # Log transaction asynchronously if possible
-        # Consider making log_transaction async if it involves I/O
-        log_transaction(transaction_data, features, result)
+        await log_transaction(transaction_data, features, result)
 
         return {
             "status": "evaluating data successfully",
