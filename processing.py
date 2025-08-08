@@ -51,7 +51,7 @@ with open("suspicious_log.txt","a") as log_file :
         else:
             print(f"failed{response.status_code}")
         
-        time.sleep(1)
+        time.sleep(0.2)
     
 """with open("suspicious_log.txt",'w') as f :
     for idx, item in enumerate(suspicious):

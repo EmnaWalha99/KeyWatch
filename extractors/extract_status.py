@@ -1,4 +1,4 @@
-from dataAccess.count_failed_attemps import count_failed_attempts
+from dataAccess.count_failed_attemps import count_failed_attempts, count_failed_attemps_cache
 def extract_status(data):
         try : 
             status = data.get("status", "unknown")
@@ -18,7 +18,9 @@ def extract_status(data):
             
 async def extract_many_failed_attempts(data):
     try:
-        number =  await count_failed_attempts(data)
+        number =  await count_failed_attempts(data) 
+        #jsut to try the caching here
+        #number = await count_failed_attemps_cache(data)
         #print("number of failed attemps : ", number)
         if number is not None and number > 3 : 
             return {
